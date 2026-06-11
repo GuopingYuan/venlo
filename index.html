@@ -1,0 +1,2717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venlo - Beijing Inter-School Sports Competition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/v4-shims.min.css" rel="stylesheet">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF', // 专业蓝（主色）
+                        secondary: '#FF7D00', // 活力橙（运动色）
+                        success: '#00B42A', // 绿色（家长主色）
+                        danger: '#F53F3F',
+                        warning: '#FF7D00',
+                        info: '#165DFF',
+                        neutral: '#F5F7FA',
+                        dark: '#1D2129'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'card': '0 2px 14px 0 rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .nav-active {
+                border-bottom: 2px solid theme('colors.primary');
+                color: theme('colors.primary');
+            }
+            .page-transition {
+                transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            }
+            .animate-pulse-slow {
+                animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral text-dark font-sans">
+    <!-- 全局导航栏（仅在首页显示） -->
+    <header id="globalNav" class="sticky top-0 z-50 bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" onclick="showPage('homePage')" class="flex items-center gap-2">
+                <img src="微信图片_20260610081813_135_25.jpg" alt="Venlo Logo" class="h-10 w-auto rounded-lg object-contain">
+                <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Beijing</span>
+            </a>
+
+            <!-- 桌面端导航 -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#home" class="font-medium nav-active">Home</a>
+                <a href="#features" class="font-medium hover:text-primary transition-colors">Features</a>
+                <a href="#sports" class="font-medium hover:text-primary transition-colors">Sports</a>
+                <a href="#how-it-works" class="font-medium hover:text-primary transition-colors">How It Works</a>
+                <a href="#faq" class="font-medium hover:text-primary transition-colors">FAQ</a>
+                <a href="#contact" class="font-medium hover:text-primary transition-colors">Contact</a>
+            </nav>
+
+            <!-- 登录按钮 -->
+            <div class="flex gap-3">
+                <button onclick="showPage('loginPage')" class="px-5 py-2 rounded-lg border border-primary text-primary hover:bg-primary/5 transition-all">
+                    Login
+                </button>
+                <button onclick="showPage('signupPage')" class="px-5 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow transition-all">
+                    Sign Up Free
+                </button>
+            </div>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="md:hidden text-xl" id="menuBtn">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- 移动端导航 -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t px-4 py-2">
+            <div class="flex flex-col gap-3 py-2">
+                <a href="#home" class="py-2 nav-active">Home</a>
+                <a href="#features" class="py-2">Features</a>
+                <a href="#sports" class="py-2">Sports</a>
+                <a href="#how-it-works" class="py-2">How It Works</a>
+                <a href="#faq" class="py-2">FAQ</a>
+                <a href="#contact" class="py-2">Contact</a>
+                <div class="flex flex-col gap-2 mt-4 pt-4 border-t">
+                    <button onclick="showPage('loginPage')" class="px-4 py-2 rounded-lg border border-primary text-primary">
+                        Login
+                    </button>
+                    <button onclick="showPage('signupPage')" class="px-4 py-2 rounded-lg bg-primary text-white">
+                        Sign Up Free
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容容器 -->
+    <main>
+        <!-- ==================== 首页 ==================== -->
+        <div id="homePage" class="page active">
+            <!-- Hero 区域 -->
+            <section id="home" class="py-20 md:py-28 bg-gradient-to-br from-primary/5 to-secondary/5">
+                <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2 space-y-6">
+                        <div class="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                            For High Schools in Beijing
+                        </div>
+                        <h1 class="text-[clamp(2.5rem,6vw,4rem)] font-bold leading-tight">
+                            Discover, Join, and Manage <br>
+                            <span class="text-primary">Inter-School Sports</span>
+                            <span class="text-secondary">Competitions Easily</span>
+                        </h1>
+                        <p class="text-lg text-gray-600 max-w-lg">
+                            Venlo is the all-in-one platform that connects Beijing high schools, empowers student athletes, and keeps parents informed every step of the way.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="showPage('loginPage')" class="px-7 py-3 rounded-lg bg-primary text-white text-lg font-medium hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                                Explore Events
+                            </button>
+                            <button onclick="showPage('signupPage')" class="px-7 py-3 rounded-lg border-2 border-primary text-primary text-lg font-medium hover:bg-primary/5 hover:-translate-y-0.5 transition-all">
+                                Get Started
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4">
+                            <div class="flex -space-x-2">
+                                <img src="https://randomuser.me/api/portraits/men/10.jpg" alt="User" class="w-8 h-8 rounded-full border-2 border-white">
+                                <img src="https://randomuser.me/api/portraits/women/11.jpg" alt="User" class="w-8 h-8 rounded-full border-2 border-white">
+                                <img src="https://randomuser.me/api/portraits/men/12.jpg" alt="User" class="w-8 h-8 rounded-full border-2 border-white">
+                                <img src="https://randomuser.me/api/portraits/women/13.jpg" alt="User" class="w-8 h-8 rounded-full border-2 border-white">
+                            </div>
+                            <p class="text-sm text-gray-600">
+                                <span class="font-bold text-primary">500+</span> students from <span class="font-bold text-primary">16</span> schools already using Venlo
+                            </p>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 relative">
+                        <div class="absolute -top-4 -left-4 w-24 h-24 bg-primary/10 rounded-full animate-pulse-slow"></div>
+                        <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-secondary/10 rounded-full animate-pulse-slow"></div>
+                        <img src="https://picsum.photos/id/1058/800/600" alt="School Sports" class="rounded-2xl shadow-card w-full relative z-10">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 角色选择区域 -->
+            <section id="features" class="py-20 bg-white">
+                <div class="container mx-auto px-4 text-center">
+                    <div class="max-w-2xl mx-auto mb-16">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Designed For Everyone</h2>
+                        <p class="text-gray-600 text-lg">
+                            Venlo provides tailored experiences for students, PE teachers, and parents, making sports management simple and enjoyable.
+                        </p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- 学生 -->
+                        <div onclick="showPage('studentPage')" class="bg-neutral rounded-2xl p-8 shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all cursor-pointer group">
+                            <div class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+                                <i class="fa fa-graduation-cap text-3xl text-primary group-hover:text-white transition-all"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">For Students</h3>
+                            <p class="text-gray-600 mb-6">Discover events, register online, find teammates, and track your sports journey all in one place.</p>
+                            <ul class="text-left space-y-2 mb-6">
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-primary"></i>
+                                    <span>Browse weekend-only events</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-primary"></i>
+                                    <span>Easy online registration</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-primary"></i>
+                                    <span>Team & opponent matching</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-primary"></i>
+                                    <span>Personal performance dashboard</span>
+                                </li>
+                            </ul>
+                            <span class="text-primary font-medium group-hover:underline">
+                                Enter Student Portal <i class="fa fa-arrow-right ml-1"></i>
+                            </span>
+                        </div>
+
+                        <!-- 教师 -->
+                        <div onclick="showPage('teacherPage')" class="bg-neutral rounded-2xl p-8 shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all cursor-pointer group">
+                            <div class="w-20 h-20 bg-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-secondary group-hover:text-white transition-all">
+                                <i class="fa fa-bullhorn text-3xl text-secondary group-hover:text-white transition-all"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">For PE Teachers</h3>
+                            <p class="text-gray-600 mb-6">Professional tools to create events, manage schedules, coordinate venues, and analyze data.</p>
+                            <ul class="text-left space-y-2 mb-6">
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-secondary"></i>
+                                    <span>Event creation with safety templates</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-secondary"></i>
+                                    <span>Intelligent conflict-free scheduling</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-secondary"></i>
+                                    <span>Beijing venue database</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-secondary"></i>
+                                    <span>Comprehensive data analytics</span>
+                                </li>
+                            </ul>
+                            <span class="text-secondary font-medium group-hover:underline">
+                                Enter Teacher Dashboard <i class="fa fa-arrow-right ml-1"></i>
+                            </span>
+                        </div>
+
+                        <!-- 家长 -->
+                        <div onclick="showPage('parentPage')" class="bg-neutral rounded-2xl p-8 shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all cursor-pointer group">
+                            <div class="w-20 h-20 bg-success/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-success group-hover:text-white transition-all">
+                                <i class="fa fa-heart text-3xl text-success group-hover:text-white transition-all"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">For Parents</h3>
+                            <p class="text-gray-600 mb-6">Stay updated with real-time match information, safety alerts, and your child's performance.</p>
+                            <ul class="text-left space-y-2 mb-6">
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-success"></i>
+                                    <span>Live match updates & scores</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-success"></i>
+                                    <span>Real-time traffic alerts</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-success"></i>
+                                    <span>Safety information & reminders</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa fa-check text-success"></i>
+                                    <span>Complete performance history</span>
+                                </li>
+                            </ul>
+                            <span class="text-success font-medium group-hover:underline">
+                                Enter Parent View <i class="fa fa-arrow-right ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 运动分类 -->
+            <section id="sports" class="py-20 bg-neutral">
+                <div class="container mx-auto px-4 text-center">
+                    <div class="max-w-2xl mx-auto mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">All Your Favorite Sports</h2>
+                        <p class="text-gray-600 text-lg">
+                            Venlo supports all popular high school sports in Beijing, with more being added regularly.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                        <div class="bg-white p-8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all">
+                            <i class="fa fa-basketball-ball text-4xl mb-4 text-primary"></i>
+                            <p class="font-medium">Basketball</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all">
+                            <i class="fa fa-futbol-o text-4xl mb-4 text-primary"></i>
+                            <p class="font-medium">Football</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all">
+                            <i class="fa-solid fa-feather-pointed text-4xl mb-4 text-primary"></i>
+                            <p class="font-medium">Badminton</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all">
+                            <i class="fa fa-running text-4xl mb-4 text-primary"></i>
+                            <p class="font-medium">Track & Field</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all">
+                            <i class="fa-solid fa-table-tennis-paddle-ball text-4xl mb-4 text-primary"></i>
+                            <p class="font-medium">Table Tennis</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all">
+                            <i class="fa fa-plus text-4xl mb-4 text-gray-400"></i>
+                            <p class="font-medium text-gray-500">More Sports</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 如何使用 -->
+            <section id="how-it-works" class="py-20 bg-white">
+                <div class="container mx-auto px-4 text-center">
+                    <div class="max-w-2xl mx-auto mb-16">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">How Venlo Works</h2>
+                        <p class="text-gray-600 text-lg">
+                            Getting started with Venlo is easy. Just follow these simple steps.
+                        </p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-4 gap-8">
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                                1
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Sign Up</h3>
+                            <p class="text-gray-600">Create your free account and select your role (student, teacher, or parent).</p>
+                            <div class="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-primary/20"></div>
+                        </div>
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                                2
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Browse Events</h3>
+                            <p class="text-gray-600">Discover upcoming sports events in Beijing that match your interests.</p>
+                            <div class="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-primary/20"></div>
+                        </div>
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                                3
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Register & Join</h3>
+                            <p class="text-gray-600">Register for events online and join teams with your classmates.</p>
+                            <div class="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-primary/20"></div>
+                        </div>
+                        <div>
+                            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                                4
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">Compete & Track</h3>
+                            <p class="text-gray-600">Participate in competitions and track your progress in your dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section id="faq" class="py-20 bg-neutral">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-3xl mx-auto">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+                            <p class="text-gray-600 text-lg">
+                                Find answers to the most common questions about Venlo.
+                            </p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-white rounded-xl shadow-card overflow-hidden">
+                                <button class="faq-toggle w-full flex items-center justify-between p-6 text-left font-medium">
+                                    <span>Is Venlo free to use?</span>
+                                    <i class="fa fa-chevron-down text-primary transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                                    Yes! Venlo is completely free for students, parents, and participating schools. We believe that every student should have access to sports opportunities without financial barriers.
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-xl shadow-card overflow-hidden">
+                                <button class="faq-toggle w-full flex items-center justify-between p-6 text-left font-medium">
+                                    <span>How do you ensure competition safety?</span>
+                                    <i class="fa fa-chevron-down text-primary transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                                    All events on Venlo include official safety plans, require qualified first aid personnel on site, and have emergency protocols in place. We also verify all participating schools and venues to ensure they meet safety standards.
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-xl shadow-card overflow-hidden">
+                                <button class="faq-toggle w-full flex items-center justify-between p-6 text-left font-medium">
+                                    <span>Are events only held on weekends?</span>
+                                    <i class="fa fa-chevron-down text-primary transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                                    Yes! By default, the student portal only shows events scheduled on weekends to avoid conflicts with school classes. This ensures that sports participation doesn't interfere with academic responsibilities.
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-xl shadow-card overflow-hidden">
+                                <button class="faq-toggle w-full flex items-center justify-between p-6 text-left font-medium">
+                                    <span>How do parents receive match updates?</span>
+                                    <i class="fa fa-chevron-down text-primary transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                                    Parents can access the dedicated Parent View portal to see real-time match updates, scores, and commentary. We also provide email and SMS notifications for important updates and safety alerts.
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-xl shadow-card overflow-hidden">
+                                <button class="faq-toggle w-full flex items-center justify-between p-6 text-left font-medium">
+                                    <span>Can my school join Venlo?</span>
+                                    <i class="fa fa-chevron-down text-primary transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                                    Absolutely! Any high school in Beijing can join Venlo for free. Have your PE teacher or school administrator contact us at schools@venlo-beijing.com to get started with school registration.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 联系我们 -->
+            <section id="contact" class="py-20 bg-white">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-5xl mx-auto bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl shadow-card overflow-hidden">
+                        <div class="grid md:grid-cols-2">
+                            <div class="p-8 md:p-12">
+                                <h2 class="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
+                                <p class="text-gray-600 mb-8">
+                                    Have questions or suggestions? We'd love to hear from you. Send us a message and we'll get back to you as soon as possible.
+                                </p>
+                                
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                            <i class="fa fa-envelope text-primary text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Email</p>
+                                            <p class="text-gray-600">support@venlo-beijing.com</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                            <i class="fa fa-phone text-primary text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Phone</p>
+                                            <p class="text-gray-600">+86 10 1234 5678</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                            <i class="fa fa-map-marker text-primary text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Address</p>
+                                            <p class="text-gray-600">Beijing High Schools Sports Union</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white p-8 md:p-12">
+                                <form class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Name</label>
+                                        <input type="text" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your name">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Email</label>
+                                        <input type="email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your email">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Subject</label>
+                                        <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                            <option>General Inquiry</option>
+                                            <option>School Registration</option>
+                                            <option>Technical Support</option>
+                                            <option>Feedback & Suggestions</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Message</label>
+                                        <textarea rows="4" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your message"></textarea>
+                                    </div>
+                                    <button type="submit" class="w-full p-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all">
+                                        Send Message
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="py-16 bg-primary text-white">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Join the Sports Community?</h2>
+                    <p class="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
+                        Join hundreds of students, teachers, and parents from Beijing high schools who are already using Venlo to make sports more accessible and enjoyable.
+                    </p>
+                    <button onclick="showPage('signupPage')" class="px-8 py-4 rounded-lg bg-white text-primary text-lg font-medium hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                        Sign Up Free Today
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== 登录页面 ==================== -->
+        <div id="loginPage" class="page hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
+            <div class="bg-white rounded-2xl p-8 w-full max-w-md mx-4 shadow-card">
+                <div class="text-center mb-8">
+                    <img src="微信图片_20260610081813_135_25.jpg" alt="Venlo Logo" class="h-16 w-auto rounded-xl object-contain mx-auto mb-4">
+                    <p class="text-gray-600 mt-2">Welcome back! Login to your account</p>
+                </div>
+                
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Select Your Role</label>
+                        <select id="loginRole" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option value="student">Student</option>
+                            <option value="teacher">PE Teacher</option>
+                            <option value="parent">Parent</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email Address</label>
+                        <input type="email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Password</label>
+                        <input type="password" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your password">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="remember" class="rounded">
+                            <label for="remember" class="text-sm text-gray-600">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-primary hover:underline">Forgot password?</a>
+                    </div>
+                    <button onclick="login()" class="w-full p-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all">
+                        Login
+                    </button>
+                    <p class="text-center text-sm text-gray-600">
+                        Don't have an account? <a href="#" onclick="showPage('signupPage')" class="text-primary hover:underline">Sign up</a>
+                    </p>
+                    <p class="text-center text-sm">
+                        <a href="#" onclick="showPage('homePage')" class="text-gray-500 hover:text-gray-700">
+                            <i class="fa fa-arrow-left mr-1"></i> Back to Home
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 注册页面 ==================== -->
+        <div id="signupPage" class="page hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
+            <div class="bg-white rounded-2xl p-8 w-full max-w-md mx-4 shadow-card">
+                <div class="text-center mb-8">
+                    <img src="微信图片_20260610081813_135_25.jpg" alt="Venlo Logo" class="h-16 w-auto rounded-xl object-contain mx-auto mb-4">
+                    <p class="text-gray-600 mt-2">Create your free account</p>
+                </div>
+                
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Select Your Role</label>
+                        <select id="signupRole" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option value="student">Student</option>
+                            <option value="teacher">PE Teacher</option>
+                            <option value="parent">Parent</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Full Name</label>
+                        <input type="text" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your full name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email Address</label>
+                        <input type="email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Password</label>
+                        <input type="password" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Create a password">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="terms" class="rounded">
+                        <label for="terms" class="text-sm text-gray-600">
+                            I agree to the <a href="#" class="text-primary hover:underline">Terms of Service</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <button onclick="signup()" class="w-full p-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all">
+                        Create Account
+                    </button>
+                    <p class="text-center text-sm text-gray-600">
+                        Already have an account? <a href="#" onclick="showPage('loginPage')" class="text-primary hover:underline">Login</a>
+                    </p>
+                    <p class="text-center text-sm">
+                        <a href="#" onclick="showPage('homePage')" class="text-gray-500 hover:text-gray-700">
+                            <i class="fa fa-arrow-left mr-1"></i> Back to Home
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 学生专属界面 ==================== -->
+        <div id="studentPage" class="page hidden">
+            <!-- 学生导航栏 -->
+            <header class="sticky top-0 z-50 bg-white shadow-sm">
+                <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+                    <a href="#" onclick="showPage('homePage')" class="flex items-center">
+                        <img src="微信图片_20260610081813_135_25.jpg" alt="Venlo Logo" class="h-8 w-auto rounded-lg object-contain">
+                    </a>
+
+                    <nav class="hidden md:flex items-center gap-6">
+                        <a href="#" onclick="showStudentTab('events')" class="font-medium nav-active" id="studentTab-events">Events</a>
+                        <a href="#" onclick="showStudentTab('register')" class="font-medium hover:text-primary transition-colors" id="studentTab-register">Register</a>
+                        <a href="#" onclick="showStudentTab('matching')" class="font-medium hover:text-primary transition-colors" id="studentTab-matching">Team Matching</a>
+                        <a href="#" onclick="showStudentTab('dashboard')" class="font-medium hover:text-primary transition-colors" id="studentTab-dashboard">My Dashboard</a>
+                    </nav>
+
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <button class="text-gray-500 hover:text-primary">
+                                <i class="fa fa-bell text-lg"></i>
+                                <span class="absolute -top-1 -right-1 w-2 h-2 bg-danger rounded-full"></span>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <img src="https://randomuser.me/api/portraits/men/10.jpg" alt="Profile" class="w-9 h-9 rounded-full">
+                            <span class="text-sm font-medium hidden md:inline">Li Ming</span>
+                        </div>
+                        <button onclick="showPage('homePage')" class="text-gray-500 hover:text-gray-700" title="Logout">
+                            <i class="fa fa-sign-out"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 学生内容区域 -->
+            <main class="container mx-auto px-4 py-8">
+                <!-- 赛事浏览 -->
+                <div id="student-events" class="student-tab active">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <h1 class="text-2xl font-bold">Upcoming Sports Events</h1>
+                        <div class="flex items-center gap-2">
+                            <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm">All Events</button>
+                            <button class="px-4 py-2 bg-white border rounded-lg text-sm hover:bg-gray-50">My Events</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 筛选器 -->
+                    <div class="bg-white rounded-xl p-5 shadow-card mb-8 flex flex-wrap gap-4">
+                        <select class="p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option>All Sports</option>
+                            <option>Basketball</option>
+                            <option>Badminton</option>
+                            <option>Track & Field</option>
+                            <option>Table Tennis</option>
+                        </select>
+                        <select class="p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option>All Districts</option>
+                            <option>Haidian</option>
+                            <option>Chaoyang</option>
+                            <option>Xicheng</option>
+                            <option>Dongcheng</option>
+                        </select>
+                        <select class="p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option>All Levels</option>
+                            <option>Beginner</option>
+                            <option>Intermediate</option>
+                            <option>Advanced</option>
+                        </select>
+                        <select class="p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option>This Month</option>
+                            <option>Next Month</option>
+                            <option>This Semester</option>
+                        </select>
+                        <label class="flex items-center gap-2 bg-primary/10 px-3 py-2 rounded-lg">
+                            <input type="checkbox" checked class="rounded">
+                            <span class="text-sm font-medium text-primary">Only weekends</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-secondary/10 px-3 py-2 rounded-lg">
+                            <input type="checkbox" class="rounded">
+                            <span class="text-sm font-medium text-secondary">Holidays</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-success/10 px-3 py-2 rounded-lg">
+                            <input type="checkbox" class="rounded">
+                            <span class="text-sm font-medium text-success">After School</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-danger/10 px-3 py-2 rounded-lg">
+                            <input type="checkbox" class="rounded">
+                            <span class="text-sm font-medium text-danger">Lunch Break</span>
+                        </label>
+                    </div>
+
+                    <!-- 赛事列表 -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&h=400&fit=crop" alt="Basketball" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 left-3">
+                                    <span class="px-3 py-1 bg-primary text-white text-xs rounded-full font-medium">Basketball</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <span class="px-3 py-1 bg-white/90 text-primary text-xs rounded-full font-medium">Intermediate</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2">Inter-School Basketball League</h3>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fa fa-calendar text-primary"></i>
+                                        <span>July 13, 2025 (Sunday) 14:00</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fa fa-map-marker text-primary"></i>
+                                        <span>Haidian Sports Center</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fa fa-users text-primary"></i>
+                                        <span>12/16 teams registered</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex -space-x-2">
+                                        <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Participant" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Participant" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <img src="https://randomuser.me/api/portraits/men/13.jpg" alt="Participant" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <div class="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-500">
+                                            +9
+                                        </div>
+                                    </div>
+                                    <button class="px-5 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-all">
+                                        Register Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1613918431703-aa50889e3be9?w=600&h=400&fit=crop" alt="Badminton" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 left-3">
+                                    <span class="px-3 py-1 bg-success text-white text-xs rounded-full font-medium">Badminton</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <span class="px-3 py-1 bg-white/90 text-success text-xs rounded-full font-medium">All Levels</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2">Beijing High School Badminton Cup</h3>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fa fa-calendar text-success"></i>
+                                        <span>July 20, 2025 (Sunday) 09:00</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fa fa-map-marker text-success"></i>
+                                        <span>Chaoyang Gymnasium</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fa fa-users text-success"></i>
+                                        <span>28/32 players registered</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex -space-x-2">
+                                        <img src="https://randomuser.me/api/portraits/women/14.jpg" alt="Participant" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <img src="https://randomuser.me/api/portraits/men/15.jpg" alt="Participant" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <img src="https://randomuser.me/api/portraits/women/16.jpg" alt="Participant" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <div class="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-500">
+                                            +25
+                                        </div>
+                                    </div>
+                                    <button class="px-5 py-2 bg-success text-white rounded-lg text-sm font-medium hover:bg-success/90 transition-all">
+                                        Register Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&h=400&fit=crop" alt="Track" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 left-3">
+                                    <span class="px-3 py-1 bg-secondary text-white text-xs rounded-full font-medium">Track & Field</span>
+                                </div>
+                                <div class="absolute top-3 right-3">
+                                    <span class="px-3 py-1 bg-white/90 text-secondary text-xs rounded-full font-medium">Beginner</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2">Summer Track and Field Meet</h3>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fa fa-calendar text-secondary"></i>
+                                        <span>July 27, 2025 (Sunday) 08:00</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fa fa-map-marker text-secondary"></i>
+                                        <span>National Olympic Sports Center</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fa fa-users text-secondary"></i>
+                                        <span>85/100 spots filled</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex -space-x-2">
+                                        <img src="https://randomuser.me/api/portraits/men/17.jpg" alt="Participant" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Participant" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <img src="https://randomuser.me/api/portraits/men/19.jpg" alt="Participant" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <div class="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-500">
+                                            +82
+                                        </div>
+                                    </div>
+                                    <button class="px-5 py-2 bg-secondary text-white rounded-lg text-sm font-medium hover:bg-secondary/90 transition-all">
+                                        Register Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 在线报名 -->
+                <div id="student-register" class="student-tab hidden">
+                    <h1 class="text-2xl font-bold mb-6">Event Registration</h1>
+                    
+                    <div class="bg-white rounded-xl p-8 shadow-card max-w-2xl mx-auto">
+                        <div class="text-center mb-8">
+                            <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fa fa-pencil text-2xl text-primary"></i>
+                            </div>
+                            <h2 class="text-xl font-bold">Register for an Event</h2>
+                            <p class="text-gray-600 mt-2">Fill out the form below to register for your chosen competition</p>
+                        </div>
+                        
+                        <form class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Select Event *</label>
+                                <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                    <option>Inter-School Basketball League - July 13, 2025</option>
+                                    <option>Beijing High School Badminton Cup - July 20, 2025</option>
+                                    <option>Summer Track and Field Meet - July 27, 2025</option>
+                                </select>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Your Name *</label>
+                                    <input type="text" value="Li Ming" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Student ID *</label>
+                                    <input type="text" placeholder="Enter your student ID" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">School *</label>
+                                    <input type="text" value="Beijing No.1 High School" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Grade & Class *</label>
+                                    <input type="text" placeholder="e.g. Grade 10, Class 3" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Phone Number *</label>
+                                    <input type="tel" placeholder="Enter your phone number" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Email Address *</label>
+                                    <input type="email" placeholder="Enter your email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Emergency Contact *</label>
+                                <input type="text" placeholder="Parent's name and phone number" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Medical Information</label>
+                                <textarea rows="2" placeholder="Any medical conditions or allergies we should know about" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
+                            </div>
+                            <div class="bg-primary/5 p-4 rounded-lg">
+                                <div class="flex items-start gap-2">
+                                    <input type="checkbox" id="agreement" class="rounded mt-1">
+                                    <label for="agreement" class="text-sm">
+                                        I have read and agree to the <a href="#" class="text-primary hover:underline">Competition Rules</a>, <a href="#" class="text-primary hover:underline">Safety Guidelines</a>, and <a href="#" class="text-primary hover:underline">Liability Waiver</a>. I confirm that I am physically fit to participate in this event.
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full p-4 bg-primary text-white rounded-lg font-medium text-lg hover:bg-primary/90 transition-all">
+                                Submit Registration
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 对手匹配 -->
+                <div id="student-matching" class="student-tab hidden">
+                    <h1 class="text-2xl font-bold mb-6">Team & Opponent Matching</h1>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- 寻找队友 -->
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-xl font-bold">Find Teammates</h3>
+                                <span class="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full">Basketball</span>
+                            </div>
+                            <p class="text-gray-600 mb-6">Looking for teammates for the upcoming Inter-School Basketball League? Connect with other students from your school.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Player" class="w-12 h-12 rounded-full">
+                                        <div>
+                                            <p class="font-medium">Wang Wei</p>
+                                            <p class="text-xs text-gray-500">Beijing No.2 High School | Guard | Grade 10</p>
+                                            <div class="flex items-center gap-1 mt-1">
+                                                <span class="text-xs bg-yellow-100 text-yellow-700 px-1.5 py-0.5 rounded">3v3 Champion</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm hover:bg-primary/90 transition-all">
+                                        Invite
+                                    </button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <img src="https://randomuser.me/api/portraits/men/12.jpg" alt="Player" class="w-12 h-12 rounded-full">
+                                        <div>
+                                            <p class="font-medium">Zhang Hao</p>
+                                            <p class="text-xs text-gray-500">Beijing No.3 High School | Center | Grade 11</p>
+                                            <div class="flex items-center gap-1 mt-1">
+                                                <span class="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Best Rebounder</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm hover:bg-primary/90 transition-all">
+                                        Invite
+                                    </button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <img src="https://randomuser.me/api/portraits/women/13.jpg" alt="Player" class="w-12 h-12 rounded-full">
+                                        <div>
+                                            <p class="font-medium">Liu Na</p>
+                                            <p class="text-xs text-gray-500">Beijing No.1 High School | Forward | Grade 10</p>
+                                            <div class="flex items-center gap-1 mt-1">
+                                                <span class="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Fast Break</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg text-sm cursor-not-allowed">
+                                        Invited
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full mt-6 p-3 border border-primary text-primary rounded-lg hover:bg-primary/5 transition-all">
+                                View More Players
+                            </button>
+                        </div>
+
+                        <!-- 寻找对手 -->
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-xl font-bold">Find Practice Opponents</h3>
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary text-xs rounded-full">Practice</span>
+                            </div>
+                            <p class="text-gray-600 mb-6">Looking for friendly practice matches before the official competition? Challenge other teams.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
+                                    <div>
+                                        <p class="font-medium">Beijing No.4 High School Team</p>
+                                        <p class="text-xs text-gray-500">Available: July 6, 14:00-16:00</p>
+                                        <p class="text-xs text-gray-500">Venue: Haidian Sports Center</p>
+                                        <div class="flex items-center gap-1 mt-1">
+                                            <span class="text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded">Intermediate Level</span>
+                                        </div>
+                                    </div>
+                                    <button class="px-4 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                        Challenge
+                                    </button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
+                                    <div>
+                                        <p class="font-medium">Beijing No.5 High School Team</p>
+                                        <p class="text-xs text-gray-500">Available: July 7, 10:00-12:00</p>
+                                        <p class="text-xs text-gray-500">Venue: Chaoyang Gymnasium</p>
+                                        <div class="flex items-center gap-1 mt-1">
+                                            <span class="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Beginner Friendly</span>
+                                        </div>
+                                    </div>
+                                    <button class="px-4 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                        Challenge
+                                    </button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
+                                    <div>
+                                        <p class="font-medium">Beijing No.6 High School Team</p>
+                                        <p class="text-xs text-gray-500">Available: July 13, 09:00-11:00</p>
+                                        <p class="text-xs text-gray-500">Venue: National Olympic Sports Center</p>
+                                        <div class="flex items-center gap-1 mt-1">
+                                            <span class="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded">Advanced Level</span>
+                                        </div>
+                                    </div>
+                                    <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg text-sm cursor-not-allowed">
+                                        Challenged
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full mt-6 p-3 border border-secondary text-secondary rounded-lg hover:bg-secondary/5 transition-all">
+                                View More Teams
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 个人仪表盘 -->
+                <div id="student-dashboard" class="student-tab hidden">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold">Welcome back, Li Ming!</h1>
+                            <p class="text-gray-600">Here's your sports activity overview</p>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            Last updated: July 8, 2025 at 14:30
+                        </div>
+                    </div>
+                    
+                    <!-- 统计卡片 -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-calendar text-primary text-xl"></i>
+                                </div>
+                                <span class="text-success text-sm font-medium">+1 this week</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">Registered Events</p>
+                            <p class="text-3xl font-bold mt-1">3</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-clock-o text-secondary text-xl"></i>
+                                </div>
+                                <span class="text-primary text-sm font-medium">In 5 days</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">Upcoming Matches</p>
+                            <p class="text-3xl font-bold mt-1">2</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-trophy text-success text-xl"></i>
+                                </div>
+                                <span class="text-success text-sm font-medium">+2 this month</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">Matches Won</p>
+                            <p class="text-3xl font-bold mt-1">5</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-star text-purple-600 text-xl"></i>
+                                </div>
+                                <span class="text-purple-600 text-sm font-medium">Top 10%</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">Total Points</p>
+                            <p class="text-3xl font-bold mt-1">128</p>
+                        </div>
+                    </div>
+
+                    <!-- 即将到来的比赛 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card mb-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold">Upcoming Matches</h3>
+                            <a href="#" class="text-primary text-sm hover:underline">View All</a>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                                <div class="flex items-center gap-6">
+                                    <div class="text-center min-w-[60px]">
+                                        <p class="font-bold text-lg text-primary">July 13</p>
+                                        <p class="text-xs text-gray-500">Sunday</p>
+                                    </div>
+                                    <div class="h-12 w-px bg-gray-300"></div>
+                                    <div>
+                                        <p class="font-medium">Basketball League - Group Stage</p>
+                                        <p class="text-sm text-gray-600">14:00 | Haidian Sports Center, Court 1</p>
+                                        <p class="text-sm text-gray-600">vs Beijing No.3 High School</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">In 5 days</span>
+                                    <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm hover:bg-primary/90 transition-all">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-success/5 rounded-lg border-l-4 border-success">
+                                <div class="flex items-center gap-6">
+                                    <div class="text-center min-w-[60px]">
+                                        <p class="font-bold text-lg text-success">July 20</p>
+                                        <p class="text-xs text-gray-500">Sunday</p>
+                                    </div>
+                                    <div class="h-12 w-px bg-gray-300"></div>
+                                    <div>
+                                        <p class="font-medium">Badminton Cup - Singles Preliminary</p>
+                                        <p class="text-sm text-gray-600">09:30 | Chaoyang Gymnasium, Court 3</p>
+                                        <p class="text-sm text-gray-600">vs Wang Tao (Beijing No.2 HS)</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="px-3 py-1 bg-success/10 text-success rounded-full text-sm font-medium">In 12 days</span>
+                                    <button class="px-4 py-2 bg-success text-white rounded-lg text-sm hover:bg-success/90 transition-all">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 过往成绩 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold">Past Results</h3>
+                            <a href="#" class="text-primary text-sm hover:underline">View Complete History</a>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Event</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Date</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Sport</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Result</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Points Earned</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">Spring Basketball Tournament</td>
+                                        <td class="py-4">June 15, 2025</td>
+                                        <td class="py-4">Basketball</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-success/10 text-success rounded-full text-xs font-medium">Champion</span></td>
+                                        <td class="py-4 font-medium">50</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">City Badminton Championship</td>
+                                        <td class="py-4">May 25, 2025</td>
+                                        <td class="py-4">Badminton</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">2nd Place</span></td>
+                                        <td class="py-4 font-medium">35</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">School Track Meet</td>
+                                        <td class="py-4">April 20, 2025</td>
+                                        <td class="py-4">100m Sprint</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-secondary/10 text-secondary rounded-full text-xs font-medium">3rd Place</span></td>
+                                        <td class="py-4 font-medium">25</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-4">Winter Basketball League</td>
+                                        <td class="py-4">January 12, 2025</td>
+                                        <td class="py-4">Basketball</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">2nd Place</span></td>
+                                        <td class="py-4 font-medium">18</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ==================== 教师专属界面 ==================== -->
+        <div id="teacherPage" class="page hidden">
+            <!-- 教师导航栏 -->
+            <header class="sticky top-0 z-50 bg-white shadow-sm">
+                <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+                    <a href="#" onclick="showPage('homePage')" class="flex items-center gap-2">
+                        <img src="微信图片_20260610081813_135_25.jpg" alt="Venlo Logo" class="h-8 w-auto rounded-lg object-contain">
+                        <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-full">Teacher</span>
+                    </a>
+
+                    <nav class="hidden md:flex items-center gap-6">
+                        <a href="#" onclick="showTeacherTab('create')" class="font-medium nav-active" id="teacherTab-create">Create Event</a>
+                        <a href="#" onclick="showTeacherTab('schedule')" class="font-medium hover:text-secondary transition-colors" id="teacherTab-schedule">Schedule</a>
+                        <a href="#" onclick="showTeacherTab('venues')" class="font-medium hover:text-secondary transition-colors" id="teacherTab-venues">Venues</a>
+                        <a href="#" onclick="showTeacherTab('communication')" class="font-medium hover:text-secondary transition-colors" id="teacherTab-communication">Communication</a>
+                        <a href="#" onclick="showTeacherTab('statistics')" class="font-medium hover:text-secondary transition-colors" id="teacherTab-statistics">Statistics</a>
+                    </nav>
+
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <button class="text-gray-500 hover:text-secondary">
+                                <i class="fa fa-bell text-lg"></i>
+                                <span class="absolute -top-1 -right-1 w-2 h-2 bg-danger rounded-full"></span>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <img src="https://randomuser.me/api/portraits/men/20.jpg" alt="Profile" class="w-9 h-9 rounded-full">
+                            <span class="text-sm font-medium hidden md:inline">Teacher Wang</span>
+                        </div>
+                        <button onclick="showPage('homePage')" class="text-gray-500 hover:text-gray-700" title="Logout">
+                            <i class="fa fa-sign-out"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 教师内容区域 -->
+            <main class="container mx-auto px-4 py-8">
+                <!-- 创建赛事 -->
+                <div id="teacher-create" class="teacher-tab active">
+                    <h1 class="text-2xl font-bold mb-6">Create New Event</h1>
+                    
+                    <div class="bg-white rounded-xl p-8 shadow-card max-w-4xl mx-auto">
+                        <form class="space-y-8">
+                            <!-- 基本信息 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-6 pb-3 border-b">Basic Information</h3>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Event Name *</label>
+                                        <input type="text" placeholder="Enter event name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Sport Type *</label>
+                                        <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                            <option>Basketball</option>
+                                            <option>Badminton</option>
+                                            <option>Track & Field</option>
+                                            <option>Table Tennis</option>
+                                            <option>Volleyball</option>
+                                            <option>Football</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Competition Level *</label>
+                                        <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                            <option>Beginner</option>
+                                            <option>Intermediate</option>
+                                            <option>Advanced</option>
+                                            <option>All Levels</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Organizing School *</label>
+                                        <input type="text" value="Beijing No.1 High School" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Start Date *</label>
+                                        <input type="date" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">End Date *</label>
+                                        <input type="date" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 安全与责任 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-6 pb-3 border-b">Safety & Liability</h3>
+                                <div class="space-y-6">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Safety Plan Template *</label>
+                                        <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                            <option>Basketball Standard Safety Plan (Recommended)</option>
+                                            <option>Badminton Standard Safety Plan</option>
+                                            <option>Track & Field Standard Safety Plan</option>
+                                            <option>Custom Safety Plan</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Liability Agreement Template *</label>
+                                        <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                            <option>Standard Inter-School Competition Agreement (Recommended)</option>
+                                            <option>Custom Liability Agreement</option>
+                                        </select>
+                                    </div>
+                                    <div class="bg-secondary/5 p-5 rounded-lg">
+                                        <h4 class="font-medium mb-4">Safety Requirements</h4>
+                                        <div class="grid md:grid-cols-2 gap-4">
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" checked class="rounded">
+                                                <span class="text-sm">Professional first aid personnel on site</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" checked class="rounded">
+                                                <span class="text-sm">Complete first aid equipment</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" checked class="rounded">
+                                                <span class="text-sm">Emergency evacuation plan</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" checked class="rounded">
+                                                <span class="text-sm">Parent consent for minors</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" checked class="rounded">
+                                                <span class="text-sm">Health check for participants</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" class="rounded">
+                                                <span class="text-sm">Insurance coverage</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 注册设置 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-6 pb-3 border-b">Registration Settings</h3>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Maximum Participants *</label>
+                                        <input type="number" value="32" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Registration Deadline *</label>
+                                        <input type="date" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Team Size</label>
+                                        <input type="text" placeholder="e.g. 5 players per team" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Registration Fee (CNY)</label>
+                                        <input type="number" value="0" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 提交按钮 -->
+                            <div class="flex justify-end gap-4">
+                                <button type="button" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all">
+                                    Save as Draft
+                                </button>
+                                <button type="submit" class="px-8 py-3 bg-secondary text-white rounded-lg font-medium hover:bg-secondary/90 transition-all">
+                                    Create Event
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 智能排期 -->
+                <div id="teacher-schedule" class="teacher-tab hidden">
+                    <h1 class="text-2xl font-bold mb-6">Intelligent Schedule Management</h1>
+                    
+                    <!-- 智能排期建议 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card mb-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold">Conflict-Free Date Suggestions</h3>
+                            <button class="px-4 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                <i class="fa fa-refresh mr-2"></i> Refresh Suggestions
+                            </button>
+                        </div>
+                        <p class="text-gray-600 mb-6">Our system automatically checks school calendars, venue availability, and other events to suggest the best dates for your competition.</p>
+                        
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="p-5 bg-success/5 rounded-lg border border-success/20">
+                                <div class="flex items-center justify-between mb-3">
+                                    <p class="font-bold text-lg text-success">July 13, 2025</p>
+                                    <span class="px-2 py-1 bg-success text-white text-xs rounded-full">Recommended</span>
+                                </div>
+                                <p class="text-sm text-success mb-2">All 16 schools available</p>
+                                <p class="text-sm text-success mb-2">All venues available</p>
+                                <p class="text-sm text-success">No conflicting events</p>
+                            </div>
+                            <div class="p-5 bg-warning/5 rounded-lg border border-warning/20">
+                                <div class="flex items-center justify-between mb-3">
+                                    <p class="font-bold text-lg text-warning">July 14, 2025</p>
+                                    <span class="px-2 py-1 bg-warning text-white text-xs rounded-full">Alternative</span>
+                                </div>
+                                <p class="text-sm text-warning mb-2">14 schools available</p>
+                                <p class="text-sm text-warning mb-2">Most venues available</p>
+                                <p class="text-sm text-warning">2 minor conflicts</p>
+                            </div>
+                            <div class="p-5 bg-danger/5 rounded-lg border border-danger/20">
+                                <div class="flex items-center justify-between mb-3">
+                                    <p class="font-bold text-lg text-danger">July 15, 2025</p>
+                                    <span class="px-2 py-1 bg-danger text-white text-xs rounded-full">Not Recommended</span>
+                                </div>
+                                <p class="text-sm text-danger mb-2">Only 8 schools available</p>
+                                <p class="text-sm text-danger mb-2">Limited venues</p>
+                                <p class="text-sm text-danger">5 major conflicts</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 当前日程 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold">Current Schedule</h3>
+                            <div class="flex items-center gap-2">
+                                <button class="px-4 py-2 bg-white border rounded-lg text-sm hover:bg-gray-50">
+                                    <i class="fa fa-calendar mr-2"></i> Calendar View
+                                </button>
+                                <button class="px-4 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                    <i class="fa fa-plus mr-2"></i> Add Match
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Date</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Time</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Event</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Teams</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Venue</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Status</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">July 13, 2025</td>
+                                        <td class="py-4">14:00-18:00</td>
+                                        <td class="py-4">Basketball League</td>
+                                        <td class="py-4">No.1 HS vs No.3 HS</td>
+                                        <td class="py-4">Haidian Sports Center</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-success/10 text-success rounded-full text-xs font-medium">Confirmed</span></td>
+                                        <td class="py-4">
+                                            <div class="flex items-center gap-2">
+                                                <button class="text-primary hover:underline text-sm">Edit</button>
+                                                <button class="text-danger hover:underline text-sm">Cancel</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">July 20, 2025</td>
+                                        <td class="py-4">09:00-17:00</td>
+                                        <td class="py-4">Badminton Cup</td>
+                                        <td class="py-4">Preliminary Rounds</td>
+                                        <td class="py-4">Chaoyang Gymnasium</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-warning/10 text-warning rounded-full text-xs font-medium">Pending</span></td>
+                                        <td class="py-4">
+                                            <div class="flex items-center gap-2">
+                                                <button class="text-primary hover:underline text-sm">Edit</button>
+                                                <button class="text-danger hover:underline text-sm">Cancel</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-4">July 27, 2025</td>
+                                        <td class="py-4">08:00-16:00</td>
+                                        <td class="py-4">Track and Field Meet</td>
+                                        <td class="py-4">All Events</td>
+                                        <td class="py-4">National Olympic Sports Center</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">Draft</span></td>
+                                        <td class="py-4">
+                                            <div class="flex items-center gap-2">
+                                                <button class="text-primary hover:underline text-sm">Edit</button>
+                                                <button class="text-danger hover:underline text-sm">Delete</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 场地协调 -->
+                <div id="teacher-venues" class="teacher-tab hidden">
+                    <h1 class="text-2xl font-bold mb-6">Venue Coordination (Beijing)</h1>
+                    
+                    <!-- 筛选器 -->
+                    <div class="bg-white rounded-xl p-5 shadow-card mb-8 flex flex-wrap gap-4">
+                        <select class="p-2 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                            <option>All Districts</option>
+                            <option>Haidian District</option>
+                            <option>Chaoyang District</option>
+                            <option>Xicheng District</option>
+                            <option>Dongcheng District</option>
+                            <option>Fengtai District</option>
+                            <option>Shijingshan District</option>
+                        </select>
+                        <select class="p-2 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                            <option>All Venue Types</option>
+                            <option>Basketball Courts</option>
+                            <option>Badminton Halls</option>
+                            <option>Track and Field Stadiums</option>
+                            <option>Indoor Gymnasiums</option>
+                            <option>Football Fields</option>
+                        </select>
+                        <input type="date" class="p-2 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary" placeholder="Select date">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="available" class="rounded">
+                            <label for="available" class="text-sm">Show only available</label>
+                        </div>
+                        <button class="px-5 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-all">
+                            Search Venues
+                        </button>
+                    </div>
+
+                    <!-- 北京场馆列表 -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- 海淀体育中心 -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
+                            <div class="relative">
+                                <img src="f6092f66668b46e0a82fe7d4d54d037d.png" alt="Haidian Sports Center" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 right-3">
+                                    <span class="px-3 py-1 bg-success text-white text-xs rounded-full font-medium">Available</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2">Haidian Sports Center</h3>
+                                <p class="text-gray-600 text-sm mb-3">48 Suzhou St, Haidian District</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Basketball</span>
+                                    <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Badminton</span>
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded">Track</span>
+                                    <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded">Swimming</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><i class="fa fa-phone text-gray-500 mr-2"></i> 010-62561234</p>
+                                    <p class="text-sm"><i class="fa fa-clock-o text-gray-500 mr-2"></i> 08:00-22:00</p>
+                                    <p class="text-sm"><i class="fa fa-car text-gray-500 mr-2"></i> Free parking (200 spots)</p>
+                                    <p class="text-sm"><i class="fa fa-subway text-gray-500 mr-2"></i> Line 10, Suzhou Street Station</p>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-success font-medium">Available on July 13</span>
+                                    <button class="px-5 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 朝阳体育馆 -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
+                            <div class="relative">
+                                <img src="071BB63F-E007-48C6-AC57-92753F38BE2D.png" alt="Chaoyang Gymnasium" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 right-3">
+                                    <span class="px-3 py-1 bg-success text-white text-xs rounded-full font-medium">Available</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2">Chaoyang Gymnasium</h3>
+                                <p class="text-gray-600 text-sm mb-3">7 Chaoyang Park S Rd, Chaoyang District</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Basketball</span>
+                                    <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Badminton</span>
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">Volleyball</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded">Table Tennis</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><i class="fa fa-phone text-gray-500 mr-2"></i> 010-65011122</p>
+                                    <p class="text-sm"><i class="fa fa-clock-o text-gray-500 mr-2"></i> 09:00-21:00</p>
+                                    <p class="text-sm"><i class="fa fa-car text-gray-500 mr-2"></i> Paid parking (150 spots)</p>
+                                    <p class="text-sm"><i class="fa fa-subway text-gray-500 mr-2"></i> Line 14, Chaoyang Park Station</p>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-success font-medium">Available on July 20</span>
+                                    <button class="px-5 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 国家奥林匹克体育中心 -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=600&h=400&fit=crop" alt="National Olympic Sports Center" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 right-3">
+                                    <span class="px-3 py-1 bg-warning text-white text-xs rounded-full font-medium">Limited</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2">National Olympic Sports Center</h3>
+                                <p class="text-gray-600 text-sm mb-3">1 Andingmen Outer St, Chaoyang District</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded">Track & Field</span>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Basketball</span>
+                                    <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded">Football</span>
+                                    <span class="px-2 py-1 bg-cyan-100 text-cyan-700 text-xs rounded">Swimming</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><i class="fa fa-phone text-gray-500 mr-2"></i> 010-84375000</p>
+                                    <p class="text-sm"><i class="fa fa-clock-o text-gray-500 mr-2"></i> 06:00-22:00</p>
+                                    <p class="text-sm"><i class="fa fa-car text-gray-500 mr-2"></i> Paid parking (500 spots)</p>
+                                    <p class="text-sm"><i class="fa fa-subway text-gray-500 mr-2"></i> Line 8, Olympic Sports Center</p>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-warning font-medium">Limited slots on July 27</span>
+                                    <button class="px-5 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 北京大学生体育馆 -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
+                            <div class="relative">
+                                <img src="6c6fe23e047a449fb80d7a22d72ea437.png" alt="Beijing University Gymnasium" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 right-3">
+                                    <span class="px-3 py-1 bg-success text-white text-xs rounded-full font-medium">Available</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2">Beijing University Gymnasium</h3>
+                                <p class="text-gray-600 text-sm mb-3">33 Xueyuan Rd, Haidian District</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Basketball</span>
+                                    <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Badminton</span>
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">Table Tennis</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded">Volleyball</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><i class="fa fa-phone text-gray-500 mr-2"></i> 010-62311188</p>
+                                    <p class="text-sm"><i class="fa fa-clock-o text-gray-500 mr-2"></i> 08:00-21:30</p>
+                                    <p class="text-sm"><i class="fa fa-car text-gray-500 mr-2"></i> Free parking (100 spots)</p>
+                                    <p class="text-sm"><i class="fa fa-subway text-gray-500 mr-2"></i> Line 10, Xitucheng Station</p>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-success font-medium">Available on July 14</span>
+                                    <button class="px-5 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 月坛体育馆 -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
+                            <div class="relative">
+                                <img src="03ab84a842334fd8b55776b4bf92fc61.png" alt="Yuetan Gymnasium" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 right-3">
+                                    <span class="px-3 py-1 bg-success text-white text-xs rounded-full font-medium">Available</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2">Yuetan Gymnasium</h3>
+                                <p class="text-gray-600 text-sm mb-3">1 Yuetan N St, Xicheng District</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Badminton</span>
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">Table Tennis</span>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Basketball</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded">Gymnastics</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><i class="fa fa-phone text-gray-500 mr-2"></i> 010-68011122</p>
+                                    <p class="text-sm"><i class="fa fa-clock-o text-gray-500 mr-2"></i> 09:00-22:00</p>
+                                    <p class="text-sm"><i class="fa fa-car text-gray-500 mr-2"></i> Paid parking (80 spots)</p>
+                                    <p class="text-sm"><i class="fa fa-subway text-gray-500 mr-2"></i> Line 2, Fuchengmen Station</p>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-success font-medium">Available on July 21</span>
+                                    <button class="px-5 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 丰台体育中心 -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
+                            <div class="relative">
+                                <img src="297e56a37cbf4502bf2c37b1feb72948.png" alt="Fengtai Sports Center" class="w-full h-48 object-cover">
+                                <div class="absolute top-3 right-3">
+                                    <span class="px-3 py-1 bg-success text-white text-xs rounded-full font-medium">Available</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2">Fengtai Sports Center</h3>
+                                <p class="text-gray-600 text-sm mb-3">55 West 4th Ring Rd S, Fengtai District</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded">Football</span>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Basketball</span>
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded">Track</span>
+                                    <span class="px-2 py-1 bg-cyan-100 text-cyan-700 text-xs rounded">Swimming</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><i class="fa fa-phone text-gray-500 mr-2"></i> 010-63811144</p>
+                                    <p class="text-sm"><i class="fa fa-clock-o text-gray-500 mr-2"></i> 08:00-21:00</p>
+                                    <p class="text-sm"><i class="fa fa-car text-gray-500 mr-2"></i> Free parking (300 spots)</p>
+                                    <p class="text-sm"><i class="fa fa-subway text-gray-500 mr-2"></i> Line 14, Dawayao Station</p>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-success font-medium">Available on July 28</span>
+                                    <button class="px-5 py-2 bg-secondary text-white rounded-lg text-sm hover:bg-secondary/90 transition-all">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 跨校沟通 -->
+                <div id="teacher-communication" class="teacher-tab hidden">
+                    <h1 class="text-2xl font-bold mb-6">Cross-School Communication</h1>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- 讨论列表 -->
+                        <div class="bg-white rounded-xl shadow-card h-[600px] flex flex-col">
+                            <div class="p-4 border-b">
+                                <h3 class="font-bold text-lg">Discussions</h3>
+                            </div>
+                            <div class="flex-1 overflow-y-auto">
+                                <div class="p-4 bg-primary/5 border-l-4 border-primary">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <p class="font-medium">Basketball League Organizers</p>
+                                        <span class="text-xs text-gray-500">14:30</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate">Teacher Wang: The schedule for July 13 is confirmed...</p>
+                                </div>
+                                <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <p class="font-medium">Badminton Cup Planning</p>
+                                        <span class="text-xs text-gray-500">Yesterday</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate">Teacher Li: We need to confirm the venue...</p>
+                                </div>
+                                <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <p class="font-medium">Track Meet Coordination</p>
+                                        <span class="text-xs text-gray-500">2 days ago</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate">Teacher Zhang: The equipment list is ready...</p>
+                                </div>
+                                <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <p class="font-medium">General Announcements</p>
+                                        <span class="text-xs text-gray-500">1 week ago</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate">Admin: Important safety update for all events...</p>
+                                </div>
+                            </div>
+                            <div class="p-4 border-t">
+                                <button class="w-full p-3 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-all">
+                                    <i class="fa fa-plus mr-2"></i> New Discussion
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 聊天窗口 -->
+                        <div class="md:col-span-2 bg-white rounded-xl shadow-card h-[600px] flex flex-col">
+                            <div class="p-4 border-b flex items-center justify-between">
+                                <h3 class="font-bold text-lg">Basketball League Organizers</h3>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-500">8 participants</span>
+                                    <button class="text-gray-500 hover:text-gray-700">
+                                        <i class="fa fa-info-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-4 space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <img src="https://randomuser.me/api/portraits/men/21.jpg" alt="Avatar" class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <p class="font-medium">Teacher Li (No.2 HS)</p>
+                                            <span class="text-xs text-gray-500">14:20</span>
+                                        </div>
+                                        <div class="bg-gray-100 p-3 rounded-lg rounded-tl-none max-w-md">
+                                            <p>Hi everyone, just wanted to confirm that our team will be participating in the basketball league on July 13. We have 12 players registered.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-3">
+                                    <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Avatar" class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <p class="font-medium">Teacher Zhang (No.3 HS)</p>
+                                            <span class="text-xs text-gray-500">14:25</span>
+                                        </div>
+                                        <div class="bg-gray-100 p-3 rounded-lg rounded-tl-none max-w-md">
+                                            <p>Great! Our team is also ready. We have 10 players. Do we need to bring our own basketballs?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-3 flex-row-reverse">
+                                    <img src="https://randomuser.me/api/portraits/men/20.jpg" alt="Avatar" class="w-10 h-10 rounded-full">
+                                    <div class="text-right">
+                                        <div class="flex items-center gap-2 mb-1 justify-end">
+                                            <span class="text-xs text-gray-500">14:30</span>
+                                            <p class="font-medium">You (No.1 HS)</p>
+                                        </div>
+                                        <div class="bg-primary text-white p-3 rounded-lg rounded-tr-none max-w-md">
+                                            <p>Yes, please bring your own basketballs for warm-up. We'll provide the official game balls. Also, don't forget to submit the player list by July 10.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-3">
+                                    <img src="https://randomuser.me/api/portraits/men/23.jpg" alt="Avatar" class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <p class="font-medium">Teacher Chen (No.4 HS)</p>
+                                            <span class="text-xs text-gray-500">14:35</span>
+                                        </div>
+                                        <div class="bg-gray-100 p-3 rounded-lg rounded-tl-none max-w-md">
+                                            <p>Got it! We'll submit the list by tomorrow. What time should we arrive at the venue?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 border-t">
+                                <div class="flex items-center gap-3">
+                                    <input type="text" placeholder="Type your message..." class="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary">
+                                    <button class="p-3 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-all">
+                                        <i class="fa fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据统计 -->
+                <div id="teacher-statistics" class="teacher-tab hidden">
+                    <h1 class="text-2xl font-bold mb-6">Data Statistics & Analytics</h1>
+                    
+                    <!-- 统计卡片 -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-calendar-check-o text-secondary text-xl"></i>
+                                </div>
+                                <span class="text-success text-sm font-medium">+2 this month</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">Total Events</p>
+                            <p class="text-3xl font-bold mt-1">12</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-users text-success text-xl"></i>
+                                </div>
+                                <span class="text-success text-sm font-medium">+45 this month</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">Total Participants</p>
+                            <p class="text-3xl font-bold mt-1">384</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-trophy text-primary text-xl"></i>
+                                </div>
+                                <span class="text-success text-sm font-medium">+8 this month</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">Matches Completed</p>
+                            <p class="text-3xl font-bold mt-1">48</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa fa-school text-purple-600 text-xl"></i>
+                                </div>
+                                <span class="text-purple-600 text-sm font-medium">+1 this month</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">Schools Participating</p>
+                            <p class="text-3xl font-bold mt-1">16</p>
+                        </div>
+                    </div>
+
+                    <!-- 图表 -->
+                    <div class="grid md:grid-cols-2 gap-8 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <h3 class="text-xl font-bold mb-6">Participation by Sport</h3>
+                            <div class="h-80">
+                                <canvas id="sportChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <h3 class="text-xl font-bold mb-6">Monthly Event Trend</h3>
+                            <div class="h-80">
+                                <canvas id="trendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 学校参与排名 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold">School Participation Ranking</h3>
+                            <select class="p-2 border rounded-lg text-sm">
+                                <option>This Semester</option>
+                                <option>This Year</option>
+                                <option>All Time</option>
+                            </select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Rank</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">School</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Events Joined</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Students Participated</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Matches Won</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Total Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold">
+                                                1
+                                            </div>
+                                        </td>
+                                        <td class="py-4 font-medium">Beijing No.1 High School</td>
+                                        <td class="py-4">10</td>
+                                        <td class="py-4">42</td>
+                                        <td class="py-4">15</td>
+                                        <td class="py-4 font-medium">245</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">
+                                                2
+                                            </div>
+                                        </td>
+                                        <td class="py-4 font-medium">Beijing No.2 High School</td>
+                                        <td class="py-4">9</td>
+                                        <td class="py-4">38</td>
+                                        <td class="py-4">12</td>
+                                        <td class="py-4 font-medium">198</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold">
+                                                3
+                                            </div>
+                                        </td>
+                                        <td class="py-4 font-medium">Beijing No.3 High School</td>
+                                        <td class="py-4">8</td>
+                                        <td class="py-4">35</td>
+                                        <td class="py-4">10</td>
+                                        <td class="py-4 font-medium">176</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-700 font-bold">
+                                                4
+                                            </div>
+                                        </td>
+                                        <td class="py-4 font-medium">Beijing No.4 High School</td>
+                                        <td class="py-4">8</td>
+                                        <td class="py-4">32</td>
+                                        <td class="py-4">11</td>
+                                        <td class="py-4 font-medium">165</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-4">
+                                            <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-700 font-bold">
+                                                5
+                                            </div>
+                                        </td>
+                                        <td class="py-4 font-medium">Beijing No.5 High School</td>
+                                        <td class="py-4">7</td>
+                                        <td class="py-4">29</td>
+                                        <td class="py-4">8</td>
+                                        <td class="py-4 font-medium">142</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ==================== 家长专属界面 ==================== -->
+        <div id="parentPage" class="page hidden">
+            <!-- 家长导航栏 -->
+            <header class="sticky top-0 z-50 bg-white shadow-sm">
+                <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+                    <a href="#" onclick="showPage('homePage')" class="flex items-center gap-2">
+                        <img src="微信图片_20260610081813_135_25.jpg" alt="Venlo Logo" class="h-8 w-auto rounded-lg object-contain">
+                        <span class="text-xs bg-success/10 text-success px-2 py-1 rounded-full">Parent</span>
+                    </a>
+
+                    <nav class="hidden md:flex items-center gap-6">
+                        <a href="#" onclick="showParentTab('updates')" class="font-medium nav-active" id="parentTab-updates">Live Updates</a>
+                        <a href="#" onclick="showParentTab('history')" class="font-medium hover:text-success transition-colors" id="parentTab-history">History</a>
+                        <a href="#" onclick="showParentTab('safety')" class="font-medium hover:text-success transition-colors" id="parentTab-safety">Safety & Travel</a>
+                    </nav>
+
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
+                            <img src="https://randomuser.me/api/portraits/women/30.jpg" alt="Profile" class="w-9 h-9 rounded-full">
+                            <span class="text-sm font-medium hidden md:inline">Parent Li</span>
+                        </div>
+                        <button onclick="showPage('homePage')" class="text-gray-500 hover:text-gray-700" title="Logout">
+                            <i class="fa fa-sign-out"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 家长内容区域 -->
+            <main class="container mx-auto px-4 py-8">
+                <!-- 实时更新 -->
+                <div id="parent-updates" class="parent-tab active">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold">Welcome, Parent Li!</h1>
+                            <p class="text-gray-600">Tracking: <span class="font-medium">Li Ming (Beijing No.1 HS)</span></p>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            Last updated: July 8, 2025 at 14:45
+                        </div>
+                    </div>
+                    
+                    <!-- 当前进行中的比赛 -->
+                    <div class="bg-white rounded-xl p-8 shadow-card mb-8 border-l-4 border-success">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-2xl font-bold">Basketball League - Live Now</h3>
+                            <span class="px-4 py-2 bg-success/10 text-success rounded-full text-sm font-medium flex items-center gap-2">
+                                <i class="fa fa-circle text-xs animate-pulse"></i> Live
+                            </span>
+                        </div>
+                        
+                        <!-- 比分板 -->
+                        <div class="flex items-center justify-between mb-8 max-w-2xl mx-auto">
+                            <div class="text-center">
+                                <img src="https://randomuser.me/api/portraits/lego/1.jpg" alt="Team" class="w-20 h-20 rounded-full mx-auto mb-4 shadow-md">
+                                <p class="font-bold text-xl">Beijing No.1 HS</p>
+                                <p class="text-5xl font-bold text-primary mt-2">45</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-gray-100 px-6 py-3 rounded-lg mb-2">
+                                    <p class="text-gray-500 text-sm">3rd Quarter</p>
+                                    <p class="text-3xl font-bold">03:15</p>
+                                </div>
+                                <p class="text-sm text-gray-500">Haidian Sports Center</p>
+                            </div>
+                            <div class="text-center">
+                                <img src="https://randomuser.me/api/portraits/lego/3.jpg" alt="Team" class="w-20 h-20 rounded-full mx-auto mb-4 shadow-md">
+                                <p class="font-bold text-xl">Beijing No.3 HS</p>
+                                <p class="text-5xl font-bold text-gray-700 mt-2">41</p>
+                            </div>
+                        </div>
+
+                        <!-- 孩子表现 -->
+                        <div class="bg-primary/5 p-5 rounded-lg mb-8">
+                            <h4 class="font-bold text-lg mb-3 flex items-center gap-2">
+                                <i class="fa fa-star text-yellow-500"></i>
+                                Li Ming's Performance Today
+                            </h4>
+                            <div class="grid grid-cols-4 gap-4 text-center">
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">12</p>
+                                    <p class="text-sm text-gray-600">Points</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">5</p>
+                                    <p class="text-sm text-gray-600">Rebounds</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">4</p>
+                                    <p class="text-sm text-gray-600">Assists</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">2</p>
+                                    <p class="text-sm text-gray-600">Steals</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 实时文字直播 -->
+                        <div>
+                            <h4 class="font-bold text-lg mb-4">Live Commentary</h4>
+                            <div class="h-64 overflow-y-auto space-y-4 p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-start gap-3">
+                                    <span class="text-xs text-gray-500 font-medium min-w-[50px]">14:45</span>
+                                    <p><span class="font-medium text-primary">Li Ming</span> makes a beautiful 3-point shot! Great form!</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-xs text-gray-500 font-medium min-w-[50px]">14:42</span>
+                                    <p>Beijing No.3 HS calls a timeout. Score is 42-41.</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-xs text-gray-500 font-medium min-w-[50px]">14:40</span>
+                                    <p><span class="font-medium text-primary">Li Ming</span> gets an assist to Wang Wei for an easy layup.</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-xs text-gray-500 font-medium min-w-[50px]">14:38</span>
+                                    <p>Beijing No.3 HS scores a quick 2-pointer on the fast break.</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-xs text-gray-500 font-medium min-w-[50px]">14:35</span>
+                                    <p><span class="font-medium text-primary">Li Ming</span> steals the ball and makes a fast break layup! What a play!</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-xs text-gray-500 font-medium min-w-[50px]">14:32</span>
+                                    <p>Wang Wei makes a free throw. Score is 37-35.</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-xs text-gray-500 font-medium min-w-[50px]">14:30</span>
+                                    <p>3rd quarter begins! Let's go No.1 HS!</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-xs text-gray-500 font-medium min-w-[50px]">14:20</span>
+                                    <p>End of 2nd quarter. Score is 36-34 to Beijing No.1 HS.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 即将到来的比赛 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card">
+                        <h3 class="text-xl font-bold mb-6">Upcoming Matches for Li Ming</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-success/5 rounded-lg border-l-4 border-success">
+                                <div>
+                                    <p class="font-medium text-lg">Badminton Cup - Singles Preliminary</p>
+                                    <p class="text-sm text-gray-600">July 20, 2025 (Sunday) 09:30</p>
+                                    <p class="text-sm text-gray-600">Chaoyang Gymnasium, Court 3</p>
+                                    <p class="text-sm text-gray-600">vs Wang Tao (Beijing No.2 High School)</p>
+                                </div>
+                                <div class="flex flex-col items-end gap-2">
+                                    <span class="px-3 py-1 bg-success/10 text-success rounded-full text-sm font-medium">In 12 days</span>
+                                    <button class="px-4 py-2 bg-success text-white rounded-lg text-sm hover:bg-success/90 transition-all">
+                                        Set Reminder
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-primary/5 rounded-lg border-l-4 border-primary">
+                                <div>
+                                    <p class="font-medium text-lg">Track and Field Meet - 100m Sprint</p>
+                                    <p class="text-sm text-gray-600">July 27, 2025 (Sunday) 08:30</p>
+                                    <p class="text-sm text-gray-600">National Olympic Sports Center</p>
+                                    <p class="text-sm text-gray-600">Heat 3, Lane 4</p>
+                                </div>
+                                <div class="flex flex-col items-end gap-2">
+                                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">In 19 days</span>
+                                    <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm hover:bg-primary/90 transition-all">
+                                        Set Reminder
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 历史成绩 -->
+                <div id="parent-history" class="parent-tab hidden">
+                    <h1 class="text-2xl font-bold mb-6">Li Ming's Competition History</h1>
+                    
+                    <!-- 成绩统计 -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mb-4">
+                                <i class="fa fa-trophy text-success text-xl"></i>
+                            </div>
+                            <p class="text-gray-500 text-sm">Total Competitions</p>
+                            <p class="text-3xl font-bold mt-1">8</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                                <i class="fa fa-medal text-yellow-600 text-xl"></i>
+                            </div>
+                            <p class="text-gray-500 text-sm">Championships</p>
+                            <p class="text-3xl font-bold mt-1">2</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+                                <i class="fa fa-trophy text-gray-600 text-xl"></i>
+                            </div>
+                            <p class="text-gray-500 text-sm">Top 3 Finishes</p>
+                            <p class="text-3xl font-bold mt-1">5</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-card">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                                <i class="fa fa-star text-purple-600 text-xl"></i>
+                            </div>
+                            <p class="text-gray-500 text-sm">Total Points</p>
+                            <p class="text-3xl font-bold mt-1">128</p>
+                        </div>
+                    </div>
+
+                    <!-- 成绩记录 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold">Complete Competition History</h3>
+                            <select class="p-2 border rounded-lg text-sm">
+                                <option>All Sports</option>
+                                <option>Basketball</option>
+                                <option>Badminton</option>
+                                <option>Track & Field</option>
+                            </select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Event</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Date</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Sport</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Result</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Venue</th>
+                                        <th class="text-left py-3 text-sm font-medium text-gray-500">Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">Spring Basketball Tournament</td>
+                                        <td class="py-4">June 15, 2025</td>
+                                        <td class="py-4">Basketball</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-success/10 text-success rounded-full text-xs font-medium">Champion</span></td>
+                                        <td class="py-4">Haidian Sports Center</td>
+                                        <td class="py-4 font-medium">50</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">City Badminton Championship</td>
+                                        <td class="py-4">May 25, 2025</td>
+                                        <td class="py-4">Badminton</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">2nd Place</span></td>
+                                        <td class="py-4">Chaoyang Gymnasium</td>
+                                        <td class="py-4 font-medium">35</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">School Track Meet</td>
+                                        <td class="py-4">April 20, 2025</td>
+                                        <td class="py-4">100m Sprint</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-warning/10 text-warning rounded-full text-xs font-medium">3rd Place</span></td>
+                                        <td class="py-4">School Stadium</td>
+                                        <td class="py-4 font-medium">25</td>
+                                    </tr>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-4">Winter Basketball League</td>
+                                        <td class="py-4">January 12, 2025</td>
+                                        <td class="py-4">Basketball</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">2nd Place</span></td>
+                                        <td class="py-4">Beijing University Gymnasium</td>
+                                        <td class="py-4 font-medium">18</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-4">Autumn Badminton Tournament</td>
+                                        <td class="py-4">October 18, 2024</td>
+                                        <td class="py-4">Badminton</td>
+                                        <td class="py-4"><span class="px-2 py-1 bg-success/10 text-success rounded-full text-xs font-medium">Champion</span></td>
+                                        <td class="py-4">Yuetan Gymnasium</td>
+                                        <td class="py-4 font-medium">40</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 安全与交通 -->
+                <div id="parent-safety" class="parent-tab hidden">
+                    <h1 class="text-2xl font-bold mb-6">Safety & Travel Information</h1>
+                    
+                    <!-- 实时路况提醒 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card mb-8 border-l-4 border-warning">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center">
+                                <i class="fa fa-exclamation-triangle text-warning text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold">Real-Time Traffic Alert (Beijing)</h3>
+                                <p class="text-gray-600">Updated: July 8, 2025 at 14:45</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="p-4 bg-warning/5 rounded-lg">
+                                <p class="font-medium text-warning mb-2"><i class="fa fa-car mr-2"></i>Current Traffic Condition</p>
+                                <p class="text-sm">Moderate traffic on North 4th Ring Road (eastbound)</p>
+                                <p class="text-sm text-gray-600">Estimated delay: 15-20 minutes to Haidian Sports Center</p>
+                            </div>
+                            
+                            <div class="p-4 bg-success/5 rounded-lg">
+                                <p class="font-medium text-success mb-2"><i class="fa fa-subway mr-2"></i>Recommended Route</p>
+                                <p class="text-sm"> Take Line 10 to Suzhou Street Station, Exit A</p>
+                                <p class="text-sm text-gray-600">5-minute walk to Haidian Sports Center | No delays expected</p>
+                            </div>
+                            
+                            <div class="p-4 bg-primary/5 rounded-lg">
+                                <p class="font-medium text-primary mb-2"><i class="fa fa-bus mr-2"></i>Alternative Route</p>
+                                <p class="text-sm"> Bus 302 or 386 to Haidian Sports Center Station</p>
+                                <p class="text-sm text-gray-600">10-minute walk | Slight delays possible</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 安全提醒 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card mb-8">
+                        <h3 class="text-xl font-bold mb-6">Safety Reminders</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4 p-4 bg-success/5 rounded-lg">
+                                <div class="w-8 h-8 bg-success/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa fa-shield text-success"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Professional Medical Support</p>
+                                    <p class="text-sm text-gray-600">All venues have qualified first aid personnel and complete medical equipment on site. Emergency response team is on standby.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-primary/5 rounded-lg">
+                                <div class="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa fa-thermometer-half text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Health & Safety Measures</p>
+                                    <p class="text-sm text-gray-600">Temperature checks are conducted at all entrances. Hand sanitizing stations are available throughout the venue.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-secondary/5 rounded-lg">
+                                <div class="w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa fa-water text-secondary"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Hydration & Rest Areas</p>
+                                    <p class="text-sm text-gray-600">Free drinking water is provided. Designated rest areas are available for athletes and spectators.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-danger/5 rounded-lg">
+                                <div class="w-8 h-8 bg-danger/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa fa-phone text-danger"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Emergency Contact</p>
+                                    <p class="text-sm text-gray-600">24/7 event hotline: <span class="font-medium">010-1234-5678</span></p>
+                                    <p class="text-sm text-gray-600">On-site medical station: Located near the main entrance</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 场馆信息 -->
+                    <div class="bg-white rounded-xl p-6 shadow-card">
+                        <h3 class="text-xl font-bold mb-6">Venue Information</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="p-5 bg-gray-50 rounded-lg">
+                                <h4 class="font-bold text-lg mb-3">Haidian Sports Center</h4>
+                                <p class="text-sm text-gray-600 mb-3">48 Suzhou St, Haidian District</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><i class="fa fa-clock-o text-gray-500 mr-2"></i> Open: 08:00-22:00</p>
+                                    <p class="text-sm"><i class="fa fa-car text-gray-500 mr-2"></i> Free parking (200 spots)</p>
+                                    <p class="text-sm"><i class="fa fa-subway text-gray-500 mr-2"></i> Line 10, Suzhou Street Station (Exit A)</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Wheelchair Accessible</span>
+                                    <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Food Court</span>
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">Restrooms</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded">First Aid</span>
+                                </div>
+                            </div>
+                            
+                            <div class="p-5 bg-gray-50 rounded-lg">
+                                <h4 class="font-bold text-lg mb-3">Chaoyang Gymnasium</h4>
+                                <p class="text-sm text-gray-600 mb-3">7 Chaoyang Park S Rd, Chaoyang District</p>
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm"><i class="fa fa-clock-o text-gray-500 mr-2"></i> Open: 09:00-21:00</p>
+                                    <p class="text-sm"><i class="fa fa-car text-gray-500 mr-2"></i> Paid parking (150 spots)</p>
+                                    <p class="text-sm"><i class="fa fa-subway text-gray-500 mr-2"></i> Line 14, Chaoyang Park Station (Exit B)</p>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Wheelchair Accessible</span>
+                                    <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Food Court</span>
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">Restrooms</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded">First Aid</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer id="globalFooter" class="bg-dark text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                            <span class="text-primary font-bold text-xl">V</span>
+                        </div>
+                        <span class="text-2xl font-bold">Venlo</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">
+                        The dedicated inter-school sports competition platform for high schools in Beijing. Connecting schools, empowering students, and keeping parents informed.
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all">
+                            <i class="fa fa-qq"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Quick Links</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" onclick="showPage('studentPage')" class="hover:text-white transition-colors">Student Portal</a></li>
+                        <li><a href="#" onclick="showPage('teacherPage')" class="hover:text-white transition-colors">Teacher Dashboard</a></li>
+                        <li><a href="#" onclick="showPage('parentPage')" class="hover:text-white transition-colors">Parent View</a></li>
+                        <li><a href="#how-it-works" class="hover:text-white transition-colors">How It Works</a></li>
+                        <li><a href="#faq" class="hover:text-white transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Support</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Safety Rules</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Registration Help</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Venue Information</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Contact Us</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-center gap-3">
+                            <i class="fa fa-envelope"></i>
+                            <span>support@venlo-beijing.com</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa fa-phone"></i>
+                            <span>+86 10 1234 5678</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa fa-map-marker"></i>
+                            <span>Beijing High Schools Sports Union</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa fa-clock-o"></i>
+                            <span>Mon-Fri: 9:00-18:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-500">
+                <p>&copy; 2025 Venlo - All Rights Reserved. Made with ❤️ for Beijing high school sports.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 页面切换功能
+        function showPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+                page.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                targetPage.classList.add('active');
+            }
+            
+            // 显示/隐藏全局导航和页脚
+            const globalNav = document.getElementById('globalNav');
+            const globalFooter = document.getElementById('globalFooter');
+            
+            if (pageId === 'homePage') {
+                globalNav.classList.remove('hidden');
+                globalFooter.classList.remove('hidden');
+            } else {
+                globalNav.classList.add('hidden');
+                globalFooter.classList.add('hidden');
+            }
+            
+            // 滚动到顶部
+            window.scrollTo(0, 0);
+            
+            // 如果是教师统计页面，初始化图表
+            if (pageId === 'teacherPage') {
+                setTimeout(initCharts, 100);
+            }
+        }
+
+        // 学生标签页切换
+        function showStudentTab(tabId) {
+            // 隐藏所有标签页
+            document.querySelectorAll('.student-tab').forEach(tab => {
+                tab.classList.add('hidden');
+                tab.classList.remove('active');
+            });
+            
+            // 显示目标标签页
+            const targetTab = document.getElementById(`student-${tabId}`);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+                targetTab.classList.add('active');
+            }
+            
+            // 更新导航状态
+            document.querySelectorAll('[id^="studentTab-"]').forEach(nav => {
+                nav.classList.remove('nav-active');
+            });
+            document.getElementById(`studentTab-${tabId}`).classList.add('nav-active');
+        }
+
+        // 教师标签页切换
+        function showTeacherTab(tabId) {
+            // 隐藏所有标签页
+            document.querySelectorAll('.teacher-tab').forEach(tab => {
+                tab.classList.add('hidden');
+                tab.classList.remove('active');
+            });
+            
+            // 显示目标标签页
+            const targetTab = document.getElementById(`teacher-${tabId}`);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+                targetTab.classList.add('active');
+            }
+            
+            // 更新导航状态
+            document.querySelectorAll('[id^="teacherTab-"]').forEach(nav => {
+                nav.classList.remove('nav-active');
+            });
+            document.getElementById(`teacherTab-${tabId}`).classList.add('nav-active');
+            
+            // 如果是统计标签页，初始化图表
+            if (tabId === 'statistics') {
+                setTimeout(initCharts, 100);
+            }
+        }
+
+        // 家长标签页切换
+        function showParentTab(tabId) {
+            // 隐藏所有标签页
+            document.querySelectorAll('.parent-tab').forEach(tab => {
+                tab.classList.add('hidden');
+                tab.classList.remove('active');
+            });
+            
+            // 显示目标标签页
+            const targetTab = document.getElementById(`parent-${tabId}`);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+                targetTab.classList.add('active');
+            }
+            
+            // 更新导航状态
+            document.querySelectorAll('[id^="parentTab-"]').forEach(nav => {
+                nav.classList.remove('nav-active');
+            });
+            document.getElementById(`parentTab-${tabId}`).classList.add('nav-active');
+        }
+
+        // 登录功能
+        function login() {
+            const role = document.getElementById('loginRole').value;
+            if (role === 'student') {
+                showPage('studentPage');
+            } else if (role === 'teacher') {
+                showPage('teacherPage');
+            } else if (role === 'parent') {
+                showPage('parentPage');
+            }
+        }
+
+        // 注册功能
+        function signup() {
+            const role = document.getElementById('signupRole').value;
+            if (role === 'student') {
+                showPage('studentPage');
+            } else if (role === 'teacher') {
+                showPage('teacherPage');
+            } else if (role === 'parent') {
+                showPage('parentPage');
+            }
+        }
+
+        // 初始化图表
+        function initCharts() {
+            // 运动参与图表
+            const sportCtx = document.getElementById('sportChart');
+            if (sportCtx && !sportCtx.chart) {
+                sportCtx.chart = new Chart(sportCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Basketball', 'Badminton', 'Track & Field', 'Table Tennis', 'Volleyball', 'Football'],
+                        datasets: [{
+                            data: [120, 95, 85, 50, 24, 10],
+                            backgroundColor: [
+                                '#165DFF',
+                                '#00B42A',
+                                '#FF7D00',
+                                '#8B5CF6',
+                                '#F53F3F',
+                                '#722ED1'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 月度趋势图表
+            const trendCtx = document.getElementById('trendChart');
+            if (trendCtx && !trendCtx.chart) {
+                trendCtx.chart = new Chart(trendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                        datasets: [{
+                            label: 'Number of Events',
+                            data: [2, 1, 3, 2, 4, 3, 5],
+                            borderColor: '#FF7D00',
+                            backgroundColor: 'rgba(255, 125, 0, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#FF7D00',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // 移动端菜单
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+
+        // FAQ 折叠面板
+        document.querySelectorAll('.faq-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+                
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#') && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                    document.getElementById('mobileMenu').classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
