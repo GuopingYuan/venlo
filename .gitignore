@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.db
+
+# Video/media (too large for GitHub)
+*.mp4
+
+# Build artifacts
+patch_profile.py
+
+# OS
+.DS_Store
+Thumbs.db

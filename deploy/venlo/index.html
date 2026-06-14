@@ -189,7 +189,9 @@
                     <div class="md:w-1/2 relative">
                         <div class="absolute -top-4 -left-4 w-24 h-24 bg-primary/10 rounded-full animate-pulse-slow"></div>
                         <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-secondary/10 rounded-full animate-pulse-slow"></div>
-                        <img src="9516.png" alt="Venlo Hero" class="rounded-2xl shadow-card w-full relative z-10" />
+                        <video autoplay loop muted playsinline class="rounded-2xl shadow-card w-full relative z-10">
+                            <source src="venlo_hero.mp4" type="video/mp4">
+                        </video>
                     </div>
                 </div>
             </section>
@@ -206,7 +208,7 @@
                     
                     <div class="grid md:grid-cols-3 gap-8">
                         <!-- 学生 -->
-                        <div onclick="window.enterPortal('student')" class="bg-neutral rounded-2xl p-8 shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all cursor-pointer group">
+                        <div onclick="showPage('studentPage')" class="bg-neutral rounded-2xl p-8 shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all cursor-pointer group">
                             <div class="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all">
                                 <i class="fa fa-graduation-cap text-3xl text-primary group-hover:text-white transition-all"></i>
                             </div>
@@ -236,7 +238,7 @@
                         </div>
 
                         <!-- 教师 -->
-                        <div onclick="window.enterPortal('teacher')" class="bg-neutral rounded-2xl p-8 shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all cursor-pointer group">
+                        <div onclick="showPage('teacherPage')" class="bg-neutral rounded-2xl p-8 shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all cursor-pointer group">
                             <div class="w-20 h-20 bg-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-secondary group-hover:text-white transition-all">
                                 <i class="fa fa-bullhorn text-3xl text-secondary group-hover:text-white transition-all"></i>
                             </div>
@@ -266,7 +268,7 @@
                         </div>
 
                         <!-- 家长 -->
-                        <div onclick="window.enterPortal('parent')" class="bg-neutral rounded-2xl p-8 shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all cursor-pointer group">
+                        <div onclick="showPage('parentPage')" class="bg-neutral rounded-2xl p-8 shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all cursor-pointer group">
                             <div class="w-20 h-20 bg-success/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-success group-hover:text-white transition-all">
                                 <i class="fa fa-heart text-3xl text-success group-hover:text-white transition-all"></i>
                             </div>
@@ -677,10 +679,6 @@
                     </a>
 
                     <nav class="hidden md:flex items-center gap-6">
-                        <a href="#" onclick="showPage('homePage')" class="text-gray-400 hover:text-primary transition-all flex items-center gap-1" title="Back to Home">
-                            <i class="fa fa-arrow-left text-xs"></i> Home
-                        </a>
-                        <span class="text-gray-200">|</span>
                         <a href="#" onclick="showStudentTab('events')" class="font-medium nav-active" id="studentTab-events">Events</a>
                         <a href="#" onclick="showStudentTab('register')" class="font-medium hover:text-primary transition-colors" id="studentTab-register">Register</a>
                         <a href="#" onclick="showStudentTab('matching')" class="font-medium hover:text-primary transition-colors" id="studentTab-matching">Team Matching</a>
@@ -849,12 +847,7 @@
 
                 <!-- 对手匹配 -->
                 <div id="student-matching" class="student-tab hidden">
-                    <div class="flex items-center justify-between mb-6">
-                        <h1 class="text-2xl font-bold">Team & Opponent Matching</h1>
-                        <button onclick="window.refreshMatching()" class="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-medium hover:bg-primary/20 transition-all" title="Refresh all data">
-                            <i class="fa fa-refresh"></i> Refresh
-                        </button>
-                    </div>
+                    <h1 class="text-2xl font-bold mb-6">Team & Opponent Matching</h1>
                     
                     <div class="grid md:grid-cols-2 gap-8">
                         <!-- 寻找队友 -->
@@ -1099,10 +1092,6 @@
                     </a>
 
                     <nav class="hidden md:flex items-center gap-6">
-                        <a href="#" onclick="showPage('homePage')" class="text-gray-400 hover:text-secondary transition-all flex items-center gap-1" title="Back to Home">
-                            <i class="fa fa-arrow-left text-xs"></i> Home
-                        </a>
-                        <span class="text-gray-200">|</span>
                         <a href="#" onclick="showTeacherTab('create')" class="font-medium nav-active" id="teacherTab-create">Create Event</a>
                         <a href="#" onclick="showTeacherTab('schedule')" class="font-medium hover:text-secondary transition-colors" id="teacherTab-schedule">Schedule</a>
                         <a href="#" onclick="showTeacherTab('venues')" class="font-medium hover:text-secondary transition-colors" id="teacherTab-venues">Venues</a>
@@ -1655,7 +1644,7 @@
                                 <h3 class="font-bold text-lg"><i class="fa fa-list-alt text-primary mr-2"></i>Recent Announcements</h3>
                                 <span class="text-sm text-gray-500">Auto-refreshed</span>
                             </div>
-                            <div id="teacherAnnouncementList" class="flex-1 overflow-y-auto p-4">
+                            <div id="announcementList" class="flex-1 overflow-y-auto p-4">
                                 <p class="text-gray-400 text-sm text-center py-4">Loading...</p>
                             </div>
                         </div>
@@ -1828,10 +1817,6 @@
                     </a>
 
                     <nav class="hidden md:flex items-center gap-6">
-                        <a href="#" onclick="showPage('homePage')" class="text-gray-400 hover:text-success transition-all flex items-center gap-1" title="Back to Home">
-                            <i class="fa fa-arrow-left text-xs"></i> Home
-                        </a>
-                        <span class="text-gray-200">|</span>
                         <a href="#" onclick="showParentTab('updates')" class="font-medium nav-active" id="parentTab-updates">Live Updates</a>
                         <a href="#" onclick="showParentTab('history')" class="font-medium hover:text-success transition-colors" id="parentTab-history">History</a>
                         <a href="#" onclick="showParentTab('safety')" class="font-medium hover:text-success transition-colors" id="parentTab-safety">Safety & Travel</a>
@@ -2266,9 +2251,9 @@
                 <div>
                     <h4 class="text-lg font-bold mb-6">Quick Links</h4>
                     <ul class="space-y-3 text-gray-400">
-                        <li><a href="#" onclick="window.enterPortal('student')" class="hover:text-white transition-colors">Student Portal</a></li>
-                        <li><a href="#" onclick="window.enterPortal('teacher')" class="hover:text-white transition-colors">Teacher Dashboard</a></li>
-                        <li><a href="#" onclick="window.enterPortal('parent')" class="hover:text-white transition-colors">Parent View</a></li>
+                        <li><a href="#" onclick="showPage('studentPage')" class="hover:text-white transition-colors">Student Portal</a></li>
+                        <li><a href="#" onclick="showPage('teacherPage')" class="hover:text-white transition-colors">Teacher Dashboard</a></li>
+                        <li><a href="#" onclick="showPage('parentPage')" class="hover:text-white transition-colors">Parent View</a></li>
                         <li><a href="#how-it-works" class="hover:text-white transition-colors">How It Works</a></li>
                         <li><a href="#faq" class="hover:text-white transition-colors">FAQ</a></li>
                     </ul>
@@ -2315,9 +2300,6 @@
     <script>
         // 页面切换功能
         function showPage(pageId) {
-            // 保存当前页面到 sessionStorage，刷新后恢复
-            sessionStorage.setItem('venloCurrentPage', pageId);
-
             // 隐藏所有页面
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.add('hidden');
@@ -2351,38 +2333,6 @@
                 setTimeout(initCharts, 100);
             }
         }
-
-        // ── 首页卡片入口：未登录弹登录窗，已登录且角色匹配直接进 ────
-        window.enterPortal = function(role) {
-            // 角色映射：role -> pageId
-            var rolePageMap = {
-                student: 'studentPage',
-                teacher: 'teacherPage',
-                parent:  'parentPage'
-            };
-            var targetPage = rolePageMap[role] || 'studentPage';
-
-            // 已登录：检查角色是否匹配
-            if (currentUser) {
-                if (currentUser.role === role || (currentUser.role === 'admin' && role === 'teacher')) {
-                    // 角色匹配，直接进入
-                    showPage(targetPage);
-                } else {
-                    // 角色不匹配，提示
-                    var roleNames = { student: 'Student', teacher: 'PE Teacher', parent: 'Parent' };
-                    showBanner('You are logged in as ' + (roleNames[currentUser.role] || currentUser.role) + '. Please switch account to access ' + roleNames[role] + ' portal.', 'warning');
-                }
-                return;
-            }
-
-            // 未登录：弹出登录弹窗，预选角色
-            window._pendingPortalRole = role;  // 记住要进入的角色
-            var loginRoleSelect = document.getElementById('loginRole');
-            if (loginRoleSelect) {
-                loginRoleSelect.value = role;
-            }
-            showPage('loginPage');
-        };
 
         // 学生标签页切换
         function showStudentTab(tabId) {
@@ -2455,7 +2405,29 @@
             document.getElementById(`parentTab-${tabId}`).classList.add('nav-active');
         }
 
-        // (login/signup functions are defined below with full API integration)
+        // 登录功能
+        function login() {
+            const role = document.getElementById('loginRole').value;
+            if (role === 'student') {
+                showPage('studentPage');
+            } else if (role === 'teacher') {
+                showPage('teacherPage');
+            } else if (role === 'parent') {
+                showPage('parentPage');
+            }
+        }
+
+        // 注册功能
+        function signup() {
+            const role = document.getElementById('signupRole').value;
+            if (role === 'student') {
+                showPage('studentPage');
+            } else if (role === 'teacher') {
+                showPage('teacherPage');
+            } else if (role === 'parent') {
+                showPage('parentPage');
+            }
+        }
 
         // 初始化图表
         function initCharts() {
@@ -2585,20 +2557,6 @@
                 return await r.json();
             } catch(e) {
                 console.warn('[API] POST', path, e.message);
-                return {error: 'Network error — is the backend running?'};
-            }
-        }
-
-        async function apiPut(path, body) {
-            try {
-                const r = await fetch(API + path, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(body)
-                });
-                return await r.json();
-            } catch(e) {
-                console.warn('[API] PUT', path, e.message);
                 return {error: 'Network error — is the backend running?'};
             }
         }
@@ -3005,31 +2963,12 @@
             showBanner('👋 ' + res.message, 'success');
 
             // 根据角色跳转
-            var rolePageMap = {
-                student: 'studentPage',
-                teacher: 'teacherPage',
-                parent:  'parentPage'
-            };
-
-            // 如果是从首页卡片点击进来的，优先跳到目标页面（需角色匹配）
-            if (window._pendingPortalRole) {
-                var wantedRole = window._pendingPortalRole;
-                window._pendingPortalRole = null;  // 清除
-                if (currentUser.role === wantedRole || (currentUser.role === 'admin' && wantedRole === 'teacher')) {
-                    showPage(rolePageMap[wantedRole]);
-                } else {
-                    showBanner('You logged in as ' + currentUser.role + ', but selected ' + wantedRole + ' portal. Redirected to your portal.', 'warning');
-                    showPage(rolePageMap[currentUser.role] || 'studentPage');
-                }
+            if (currentUser.role === 'teacher' || currentUser.role === 'admin') {
+                showPage('teacherPage');
+            } else if (currentUser.role === 'parent') {
+                showPage('parentPage');
             } else {
-                // 正常登录：按角色跳转
-                if (currentUser.role === 'teacher' || currentUser.role === 'admin') {
-                    showPage('teacherPage');
-                } else if (currentUser.role === 'parent') {
-                    showPage('parentPage');
-                } else {
-                    showPage('studentPage');
-                }
+                showPage('studentPage');
             }
 
             // 更新各界面用户名显示
@@ -3207,56 +3146,36 @@
                 showBanner('✅ Announcement posted!', 'success');
                 if (document.getElementById('annTitle')) document.getElementById('annTitle').value = '';
                 if (document.getElementById('annContent')) document.getElementById('annContent').value = '';
-                loadAnnouncementList('teacherAnnouncementList');
+                loadAnnouncementList();
             }
         }
 
-        // ── 加载通知列表（containerId: 'announcementList'=学生, 'teacherAnnouncementList'=教师） ──
-        async function loadAnnouncementList(containerId) {
-            containerId = containerId || 'announcementList';
-            var container = document.getElementById(containerId);
+        // ── 加载通知列表（用于教师面板和通知页） ─────────────
+        async function loadAnnouncementList() {
+            const container = document.getElementById('announcementList');
             if (!container) return;
-            var data = await apiGet('/announcements?limit=10');
+            const data = await apiGet('/announcements?limit=10');
             if (!data || !data.announcements.length) {
                 container.innerHTML = '<p class="text-gray-400 text-sm text-center py-4">No announcements yet.</p>';
                 return;
             }
-            var typeStyles = {
+            const typeStyles = {
                 info:    'bg-blue-50 border-blue-200 text-blue-800',
                 success: 'bg-green-50 border-green-200 text-green-800',
                 warning: 'bg-orange-50 border-orange-200 text-orange-800',
                 danger:  'bg-red-50 border-red-200 text-red-800',
             };
-            container.innerHTML = data.announcements.map(function(a) {
-                return '<div class="p-4 rounded-lg border '+(typeStyles[a.type]||typeStyles.info)+' mb-3 relative group">'
-                    + '<div class="flex justify-between items-start mb-1">'
-                    + '<p class="font-semibold text-sm">'+a.title+'</p>'
-                    + '<span class="text-xs opacity-60 whitespace-nowrap ml-2">'+(a.created_at?a.created_at.slice(0,16):'')+'</span>'
-                    + '</div>'
-                    + '<p class="text-sm opacity-80">'+a.content+'</p>'
-                    + (a.event_title ? '<p class="text-xs mt-1 opacity-60">Event: '+a.event_title+'</p>' : '')
-                    + '<button onclick="deleteAnnouncement('+a.id+')" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full w-7 h-7 flex items-center justify-center" title="Delete">'
-                    + '<i class="fa fa-trash text-xs"></i>'
-                    + '</button>'
-                    + '</div>';
-            }).join('');
+            container.innerHTML = data.announcements.map(a => `
+                <div class="p-4 rounded-lg border ${typeStyles[a.type]||typeStyles.info} mb-3">
+                    <div class="flex justify-between items-start mb-1">
+                        <p class="font-semibold text-sm">${a.title}</p>
+                        <span class="text-xs opacity-60 whitespace-nowrap ml-2">${a.created_at?.slice(0,16)||''}</span>
+                    </div>
+                    <p class="text-sm opacity-80">${a.content}</p>
+                    ${a.event_title ? `<p class="text-xs mt-1 opacity-60">Event: ${a.event_title}</p>` : ''}
+                </div>
+            `).join('');
         }
-
-        // ── 删除通知 ──────────────────────────────────────────
-        window.deleteAnnouncement = async function(id) {
-            if (!confirm('Delete this announcement? This cannot be undone.')) return;
-            try {
-                var res = await apiPost('/announcements/' + id + '/delete', {});
-                if (res && res.success) {
-                    showBanner('Announcement deleted', 'success');
-                    loadAnnouncementList('teacherAnnouncementList');
-                } else {
-                    showBanner((res && res.error) || 'Failed to delete', 'error');
-                }
-            } catch(e) {
-                showBanner('Error: ' + e.message, 'error');
-            }
-        };
 
         // ── 加载家长通知 ──────────────────────────────────────
         async function loadParentAnnouncements() {
@@ -3376,7 +3295,7 @@
                 }
             }
             if (pageId === 'teacherPage') {
-                loadAnnouncementList('teacherAnnouncementList');
+                loadAnnouncementList();
             }
             if (pageId === 'parentPage') {
                 loadParentAnnouncements();
@@ -3388,11 +3307,6 @@
 
         // ── 页面初始化 ────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', () => {
-            // 恢复上次浏览的页面（非首页时）
-            var savedPage = sessionStorage.getItem('venloCurrentPage');
-            if (savedPage && savedPage !== 'homePage') {
-                showPage(savedPage);
-            }
             loadHomeStats();
             loadAnnouncements();
             if (currentUser) {
@@ -3590,13 +3504,7 @@
                 html += '<span class="text-xs text-gray-400 ml-2">' + role + '</span></div>';
                 html += '<span class="text-xs text-gray-500">' + (t.member_count||0) + '/' + t.max_members + '</span>';
                 html += '</div>';
-                html += '<div class="flex items-center justify-between mt-1">';
-                html += '<span class="text-xs text-gray-400">' + (t.sport||'') + ' · Code: <span class="font-mono text-primary">' + t.invite_code + '</span></span>';
-                // 队长可以邀请
-                if (t.my_role === 'captain') {
-                    html += '<button onclick="window.showInviteModal(' + t.id + ',\'' + t.name.replace(/'/g,"\\'") + '\')" class="text-xs text-primary hover:underline"><i class="fa fa-user-plus mr-1"></i>Invite</button>';
-                }
-                html += '</div>';
+                html += '<div class="text-xs text-gray-400 mt-1">' + (t.sport||'') + ' · Code: <span class="font-mono text-primary">' + t.invite_code + '</span></div>';
                 html += '</div>';
             });
             container.innerHTML = html;
@@ -3648,18 +3556,23 @@
         // -- 处理请求 --
         window.handleRequest = async function(reqId, action) {
             try {
-                var res = await apiPut('/team-requests/' + reqId, {action: action});
-                if (res && res.success) {
+                var res = await fetch(API + '/team-requests/' + reqId, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({action: action})
+                });
+                var data = await res.json();
+                if (data.success) {
                     showBanner(action === 'accepted' ? 'Request accepted!' : 'Request declined', action === 'accepted' ? 'success' : 'info');
                     window.loadPendingRequests();
                     window.loadMyTeams();
                     window.loadTeams();
                     window.updateNotificationBadge();
                 } else {
-                    showBanner((res && res.error) || 'Failed', 'error');
+                    showBanner(data.error || 'Failed', 'danger');
                 }
             } catch(e) {
-                showBanner('Error: ' + e.message, 'error');
+                showBanner('Error: ' + e.message, 'danger');
             }
         };
 
@@ -3802,82 +3715,6 @@
         };
 
         // ══════════════════════════════════════════════════
-        //  INVITE MEMBERS TO TEAM
-        // ══════════════════════════════════════════════════
-        var _inviteTeamId = null;
-
-        window.showInviteModal = function(teamId, teamName) {
-            if (!currentUser) { showBanner('Please login first', 'warning'); return; }
-            _inviteTeamId = teamId;
-            document.getElementById('inviteTeamNameLabel').textContent = teamName;
-            document.getElementById('inviteSearchInput').value = '';
-            document.getElementById('inviteUserId').value = '';
-            document.getElementById('inviteMessage').value = '';
-            document.getElementById('inviteSearchResults').classList.add('hidden');
-            document.getElementById('inviteModal').classList.remove('hidden');
-        };
-
-        window.closeInviteModal = function() {
-            document.getElementById('inviteModal').classList.add('hidden');
-            _inviteTeamId = null;
-        };
-
-        var _inviteSearchTimer = null;
-        window.searchInviteUsers = function() {
-            clearTimeout(_inviteSearchTimer);
-            var q = document.getElementById('inviteSearchInput').value.trim();
-            if (!q) { document.getElementById('inviteSearchResults').classList.add('hidden'); return; }
-            _inviteSearchTimer = setTimeout(async function() {
-                var uData = await apiGet('/users?role=student');
-                var results = document.getElementById('inviteSearchResults');
-                if (uData && uData.users) {
-                    var filtered = uData.users.filter(function(u) {
-                        return (u.name && u.name.toLowerCase().indexOf(q.toLowerCase()) >= 0) ||
-                               (u.username && u.username.toLowerCase().indexOf(q.toLowerCase()) >= 0);
-                    }).filter(function(u) { return u.id !== currentUser.id; });  // 排除自己
-                    if (filtered.length) {
-                        results.innerHTML = filtered.map(function(u) {
-                            return '<div class="px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm" onclick="window.pickInviteUser('+u.id+',\''+u.name.replace(/'/g,"\\'")+ '\')">' + u.name + ' (' + (u.school||'') + ')</div>';
-                        }).join('');
-                        results.classList.remove('hidden');
-                    } else {
-                        results.innerHTML = '<div class="px-3 py-2 text-sm text-gray-400">No users found</div>';
-                        results.classList.remove('hidden');
-                    }
-                }
-            }, 300);
-        };
-
-        window.pickInviteUser = function(userId, userName) {
-            document.getElementById('inviteUserId').value = userId;
-            document.getElementById('inviteSearchInput').value = userName;
-            document.getElementById('inviteSearchResults').classList.add('hidden');
-        };
-
-        window.submitInvite = async function() {
-            if (!_inviteTeamId || !currentUser) return;
-            var userId = parseInt(document.getElementById('inviteUserId').value);
-            if (!userId) { showBanner('Please select a user to invite', 'warning'); return; }
-            try {
-                var res = await apiPost('/team-requests', {
-                    team_id: _inviteTeamId,
-                    user_id: userId,
-                    type: 'invite',
-                    message: document.getElementById('inviteMessage').value
-                });
-                if (res && res.success) {
-                    showBanner('Invitation sent!', 'success');
-                    window.closeInviteModal();
-                    window.updateNotificationBadge();
-                } else {
-                    showBanner((res && res.error) || 'Failed to send invitation', 'error');
-                }
-            } catch(e) {
-                showBanner('Error: ' + e.message, 'error');
-            }
-        };
-
-        // ══════════════════════════════════════════════════
         //  PRACTICE CHALLENGES LOGIC
         // ══════════════════════════════════════════════════
         window.loadChallenges = async function() {
@@ -3886,8 +3723,6 @@
             var params = [];
             if (sport) params.push('sport=' + encodeURIComponent(sport));
             if (status) params.push('status=' + encodeURIComponent(status));
-            // 传入当前用户，后端过滤出与该用户相关的约战
-            if (currentUser) params.push('user_id=' + currentUser.id);
             var qs = params.length ? '?' + params.join('&') : '';
             var data = await apiGet('/practice-challenges' + qs);
             var container = document.getElementById('challengesListContainer');
@@ -3899,13 +3734,9 @@
             data.challenges.forEach(function(ch) {
                 var statusColors = {pending:'bg-yellow-100 text-yellow-700', accepted:'bg-green-100 text-green-700', declined:'bg-red-100 text-red-700', completed:'bg-blue-100 text-blue-700', cancelled:'bg-gray-100 text-gray-500'};
                 var sc = statusColors[ch.status] || 'bg-gray-100 text-gray-500';
-                // 判断当前用户是挑战方还是被挑战方
-                var isChallenger = (ch.challenger_type === 'individual' && currentUser && ch.challenger_id === currentUser.id);
-                var isChallenged = (ch.challenged_type === 'individual' && currentUser && ch.challenged_id === currentUser.id);
-                var roleLabel = isChallenger ? 'You → ' : (isChallenged ? '→ You' : '');
                 html += '<div class="p-3 bg-gray-50 rounded-lg">';
                 html += '<div class="flex items-center justify-between mb-1">';
-                html += '<span class="font-medium text-sm">' + (roleLabel ? '<span class="text-xs text-primary mr-1">' + roleLabel + '</span>' : '') + (ch.challenger_name||'?') + ' vs ' + (ch.challenged_name||'?') + '</span>';
+                html += '<span class="font-medium text-sm">' + (ch.challenger_name||'?') + ' vs ' + (ch.challenged_name||'?') + '</span>';
                 html += '<span class="text-xs ' + sc + ' px-2 py-0.5 rounded-full">' + ch.status + '</span>';
                 html += '</div>';
                 html += '<div class="text-xs text-gray-500">';
@@ -3915,17 +3746,15 @@
                 html += '</div>';
                 if (ch.message) html += '<div class="text-xs text-gray-400 mt-1 italic">"' + ch.message + '"</div>';
                 // 如果我是被挑战方且状态为 pending，显示操作按钮
-                if (ch.status === 'pending' && isChallenged) {
-                    html += '<div class="flex gap-2 mt-2">';
-                    html += '<button onclick="window.handleChallenge(' + ch.id + ',\'accepted\')" class="px-3 py-1 bg-success text-white rounded text-xs hover:opacity-90">Accept</button>';
-                    html += '<button onclick="window.handleChallenge(' + ch.id + ',\'declined\')" class="px-3 py-1 border rounded text-xs hover:bg-gray-100">Decline</button>';
-                    html += '</div>';
-                }
-                // 如果我是挑战方且状态为 pending，可以取消
-                if (ch.status === 'pending' && isChallenger) {
-                    html += '<div class="flex gap-2 mt-2">';
-                    html += '<button onclick="window.handleChallenge(' + ch.id + ',\'cancelled\')" class="px-3 py-1 border border-red-300 text-red-500 rounded text-xs hover:bg-red-50">Cancel</button>';
-                    html += '</div>';
+                if (ch.status === 'pending' && currentUser) {
+                    var isChallenged = (ch.challenged_type === 'individual' && ch.challenged_id === currentUser.id);
+                    // TODO: check if challenged team belongs to current user
+                    if (isChallenged) {
+                        html += '<div class="flex gap-2 mt-2">';
+                        html += '<button onclick="window.handleChallenge(' + ch.id + ',\'accepted\')" class="px-3 py-1 bg-success text-white rounded text-xs">Accept</button>';
+                        html += '<button onclick="window.handleChallenge(' + ch.id + ',\'declined\')" class="px-3 py-1 border rounded text-xs">Decline</button>';
+                        html += '</div>';
+                    }
                 }
                 html += '</div>';
             });
@@ -3935,15 +3764,18 @@
         // -- 处理约战 --
         window.handleChallenge = async function(chId, action) {
             try {
-                var res = await apiPut('/practice-challenges/' + chId, {action: action});
-                if (res && res.success) {
-                    showBanner(action === 'accepted' ? 'Challenge accepted!' : (action === 'cancelled' ? 'Challenge cancelled' : 'Challenge declined'), action === 'accepted' ? 'success' : 'info');
+                var res = await fetch(API + '/practice-challenges/' + chId, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({action: action})
+                });
+                var data = await res.json();
+                if (data.success) {
+                    showBanner(action === 'accepted' ? 'Challenge accepted!' : 'Challenge declined', action === 'accepted' ? 'success' : 'info');
                     window.loadChallenges();
                     window.updateNotificationBadge();
-                } else {
-                    showBanner((res && res.error) || 'Failed', 'error');
                 }
-            } catch(e) { showBanner('Error: ' + e.message, 'error'); }
+            } catch(e) { showBanner('Error: ' + e.message, 'danger'); }
         };
 
         // -- 发起约战弹窗 --
@@ -3955,11 +3787,6 @@
             document.getElementById('chMessage').value = '';
             document.getElementById('chOpponentName').value = '';
             document.getElementById('chOpponentId').value = '';
-            // 清除输入框高亮残留
-            var nameInput = document.getElementById('chOpponentName');
-            nameInput.style.borderColor = '';
-            nameInput.style.backgroundColor = '';
-            nameInput.style.borderWidth = '';
             document.getElementById('chOpponentResults').classList.add('hidden');
             // 加载我的队伍
             var mtData = await apiGet('/teams/my?user_id=' + currentUser.id);
@@ -3981,7 +3808,7 @@
             document.getElementById('chMyTeamRow').classList.toggle('hidden', type !== 'team');
         };
 
-        // -- 搜索对手（DOM 构建，零 innerHTML 风险）--
+        // -- 搜索对手 --
         var _searchTimer = null;
         window.searchOpponents = function() {
             clearTimeout(_searchTimer);
@@ -3990,11 +3817,6 @@
             _searchTimer = setTimeout(async function() {
                 var type = document.getElementById('chChallengedType').value;
                 var results = document.getElementById('chOpponentResults');
-                // 清空旧结果 & 清除选中状态
-                while (results.firstChild) results.removeChild(results.firstChild);
-                document.getElementById('chOpponentId').value = '';
-                document.getElementById('chOpponentName').style.borderColor = '';
-                document.getElementById('chOpponentName').style.backgroundColor = '';
                 if (type === 'team') {
                     var data = await apiGet('/teams?status=recruiting');
                     if (data && data.teams) {
@@ -4002,16 +3824,9 @@
                             return t.name.toLowerCase().indexOf(q.toLowerCase()) >= 0;
                         });
                         if (filtered.length) {
-                            filtered.forEach(function(t) {
-                                var div = document.createElement('div');
-                                div.className = 'px-3 py-2.5 hover:bg-blue-50 cursor-pointer text-sm border-b border-gray-100 last:border-0 flex items-center gap-2';
-                                div.innerHTML = '<span class="text-blue-500 font-bold">👆</span> <span>' + t.name + '</span> <span class="text-gray-400 text-xs">(' + t.sport + ') - Click to select</span>';
-                                div.setAttribute('data-id', t.id);
-                                div.setAttribute('data-name', t.name);
-                                div.setAttribute('data-type', 'team');
-                                div.onclick = function() { window.pickOpponentFromElement(this); };
-                                results.appendChild(div);
-                            });
+                            results.innerHTML = filtered.map(function(t) {
+                                return '<div class="px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm" onclick="window.pickOpponent('+t.id+',\''+t.name.replace(/'/g,"\\'")+'\',\'team\')">'+t.name+' ('+t.sport+')</div>';
+                            }).join('');
                             results.classList.remove('hidden');
                         } else {
                             results.innerHTML = '<div class="px-3 py-2 text-sm text-gray-400">No teams found</div>';
@@ -4025,16 +3840,9 @@
                             return u.name.toLowerCase().indexOf(q.toLowerCase()) >= 0;
                         });
                         if (filtered.length) {
-                            filtered.slice(0, 6).forEach(function(u) {
-                                var div = document.createElement('div');
-                                div.className = 'px-3 py-2.5 hover:bg-blue-50 cursor-pointer text-sm border-b border-gray-100 last:border-0 flex items-center gap-2';
-                                div.innerHTML = '<span class="text-blue-500 font-bold">👆</span> <span>' + u.name + '</span> <span class="text-gray-400 text-xs">(' + u.school + ') - Click to select</span>';
-                                div.setAttribute('data-id', u.id);
-                                div.setAttribute('data-name', u.name);
-                                div.setAttribute('data-type', 'individual');
-                                div.onclick = function() { window.pickOpponentFromElement(this); };
-                                results.appendChild(div);
-                            });
+                            results.innerHTML = filtered.slice(0,6).map(function(u) {
+                                return '<div class="px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm" onclick="window.pickOpponent('+u.id+',\''+u.name.replace(/'/g,"\\'")+'\',\'individual\')">'+u.name+' ('+u.school+')</div>';
+                            }).join('');
                             results.classList.remove('hidden');
                         } else {
                             results.innerHTML = '<div class="px-3 py-2 text-sm text-gray-400">No students found</div>';
@@ -4044,58 +3852,20 @@
                 }
             }, 300);
         };
-
-        // 从点击的元素读取 data 属性设置对手
-        window.pickOpponentFromElement = function(el) {
-            var id   = el.getAttribute('data-id');
-            var name = el.getAttribute('data-name');
-            console.log('[pickOpponent] id=' + id + ' name=' + name);
-            document.getElementById('chOpponentId').value = id || '';
-            document.getElementById('chOpponentName').value = name || '';
-            // ✅ 强视觉反馈：输入框变绿
-            var nameInput = document.getElementById('chOpponentName');
-            nameInput.style.borderColor = '#22c55e';
-            nameInput.style.backgroundColor = '#f0fdf4';
-            nameInput.style.borderWidth = '2px';
-            // 高亮选中项
-            el.style.background = '#dbeafe';
-            el.style.borderRadius = '6px';
-            el.style.fontWeight = '600';
+        window.pickOpponent = function(id, name, type) {
+            document.getElementById('chOpponentId').value = id;
+            document.getElementById('chOpponentName').value = name;
             document.getElementById('chOpponentResults').classList.add('hidden');
-            showBanner('✅ Selected: ' + (name || '?'), 'success');
         };
 
         // -- 提交约战 --
         window.submitChallenge = async function() {
             var sport = document.getElementById('chSport').value;
             var opponentId = document.getElementById('chOpponentId').value;
-            console.log('[submitChallenge] sport:', JSON.stringify(sport), 'opponentId:', JSON.stringify(opponentId));
-            if (!sport) { showBanner('Please select a Sport from the dropdown', 'warning'); return; }
-            if (!opponentId) {
-                // 🔴 强提醒：高亮输入框 + 展开搜索结果
-                var nameInput = document.getElementById('chOpponentName');
-                nameInput.style.borderColor = '#ef4444';
-                nameInput.style.borderWidth = '2px';
-                nameInput.focus();
-                var resultsDiv = document.getElementById('chOpponentResults');
-                // 如果有搜索结果但没选，展开它
-                if (resultsDiv && resultsDiv.children.length > 0) {
-                    resultsDiv.classList.remove('hidden');
-                    resultsDiv.style.animation = 'bannerPopIn 0.3s ease, bannerFadeIn 0.3s ease';
-                    // 给第一个结果加红色闪烁边框
-                    var firstChild = resultsDiv.children[0];
-                    if (firstChild) {
-                        firstChild.style.border = '2px solid #ef4444';
-                        firstChild.style.borderRadius = '6px';
-                        setTimeout(function() { firstChild.style.border = ''; }, 1500);
-                    }
-                }
-                showBanner('⚠️ Please click a name from the dropdown list to select your opponent!', 'error');
-                return;
-            }
+            if (!sport || !opponentId) { showBanner('Sport and opponent are required', 'warning'); return; }
             var cType = document.getElementById('chChallengerType').value;
             var cId = cType === 'team' ? document.getElementById('chMyTeam').value : currentUser.id;
-            if (!cId) { showBanner('Select your team or switch to Individual', 'warning'); return; }
+            if (!cId) { showBanner('Select your team or switch to individual', 'warning'); return; }
             var dType = document.getElementById('chChallengedType').value;
             var payload = {
                 sport: sport,
@@ -4109,17 +3879,20 @@
                 message: document.getElementById('chMessage').value
             };
             try {
-                var res = await apiPost('/practice-challenges', payload);
-                if (res && res.success) {
-                    showBanner('Challenge sent successfully!', 'success');
+                var res = await fetch(API + '/practice-challenges', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+                var data = await res.json();
+                if (data.success) {
+                    showBanner('Challenge sent!', 'success');
                     window.closeChallengeModal();
-                    document.getElementById('challengeFilterStatus').value = '';
                     window.loadChallenges();
-                    window.updateNotificationBadge();
                 } else {
-                    showBanner((res && res.error) || 'Failed to send challenge', 'error');
+                    showBanner(data.error || 'Failed', 'danger');
                 }
-            } catch(e) { showBanner('Error: ' + e.message, 'error'); }
+            } catch(e) { showBanner('Error: ' + e.message, 'danger'); }
         };
 
         // ══════════════════════════════════════════════════
@@ -4173,28 +3946,6 @@
                 window.updateNotificationBadge();
                 _matchingLoaded = true;
             }
-        };
-
-        // -- 刷新按钮：重新加载所有 matching 数据 --
-        window.refreshMatching = async function() {
-            if (!currentUser) { showBanner('Please login first', 'warning'); return; }
-            // 旋转刷新图标动画
-            var btn = document.querySelector('#student-matching button[onclick*="refreshMatching"] i');
-            if (btn) { btn.classList.add('fa-spin'); }
-            try {
-                await Promise.all([
-                    window.initMatchingFilters(),
-                    window.loadTeams(),
-                    window.loadChallenges(),
-                    window.loadMyTeams(),
-                    window.loadPendingRequests(),
-                    window.updateNotificationBadge()
-                ]);
-                showBanner('Data refreshed!', 'success');
-            } catch(e) {
-                showBanner('Refresh failed: ' + e.message, 'error');
-            }
-            if (btn) { setTimeout(function(){ btn.classList.remove('fa-spin'); }, 500); }
         };
 
     </script>
@@ -4335,32 +4086,6 @@
             <div class="px-5 py-3 border-t flex justify-end gap-3">
                 <button onclick="window.closeApplyModal()" class="px-5 py-1.5 border border-gray-300 rounded-lg text-gray-600 text-sm">Cancel</button>
                 <button onclick="window.submitApply()" class="px-5 py-1.5 bg-primary text-white rounded-lg text-sm">Apply</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 邀请队员弹窗 -->
-    <div id="inviteModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4" onclick="if(event.target===this)window.closeInviteModal()">
-        <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl">
-            <div class="flex items-center justify-between px-5 py-3 border-b">
-                <h3 class="font-bold text-lg">Invite to <span id="inviteTeamNameLabel">Team</span></h3>
-                <button onclick="window.closeInviteModal()" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
-            </div>
-            <div class="p-5 space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Search by name or username</label>
-                    <input id="inviteSearchInput" type="text" class="w-full p-2 border rounded-lg text-sm" placeholder="Type to search users..." oninput="window.searchInviteUsers()">
-                    <div id="inviteSearchResults" class="mt-1 max-h-40 overflow-y-auto border rounded-lg hidden"></div>
-                    <input id="inviteUserId" type="hidden">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Message (optional)</label>
-                    <textarea id="inviteMessage" rows="2" class="w-full p-2 border rounded-lg text-sm" placeholder="Say something..."></textarea>
-                </div>
-            </div>
-            <div class="px-5 py-3 border-t flex justify-end gap-3">
-                <button onclick="window.closeInviteModal()" class="px-5 py-1.5 border border-gray-300 rounded-lg text-gray-600 text-sm">Cancel</button>
-                <button onclick="window.submitInvite()" class="px-5 py-1.5 bg-primary text-white rounded-lg text-sm">Send Invite</button>
             </div>
         </div>
     </div>
