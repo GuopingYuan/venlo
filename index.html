@@ -3889,10 +3889,16 @@
             // 传入当前用户，后端过滤出与该用户相关的约战
             if (currentUser) params.push('user_id=' + currentUser.id);
             var qs = params.length ? '?' + params.join('&') : '';
+            console.log('[loadChallenges] GET /practice-challenges' + qs);
             var data = await apiGet('/practice-challenges' + qs);
+            console.log('[loadChallenges] response:', JSON.stringify(data));
             var container = document.getElementById('challengesListContainer');
-            if (!data || !data.challenges || data.challenges.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 text-center py-4">No practice challenges found</p>';
+            if (!data) {
+                container.innerHTML = '<p class="text-red-400 text-center py-4">⚠️ Failed to load challenges — is the backend running?</p>';
+                return;
+            }
+            if (!data.challenges || data.challenges.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-center py-4">No practice challenges yet. Click <b>Challenge</b> to send one!</p>';
                 return;
             }
             var html = '';
@@ -4108,13 +4114,16 @@
                 level: document.getElementById('chLevel').value,
                 message: document.getElementById('chMessage').value
             };
+            console.log('[submitChallenge] payload:', JSON.stringify(payload));
             try {
                 var res = await apiPost('/practice-challenges', payload);
+                console.log('[submitChallenge] response:', JSON.stringify(res));
                 if (res && res.success) {
                     showBanner('Challenge sent successfully!', 'success');
                     window.closeChallengeModal();
-                    document.getElementById('challengeFilterStatus').value = '';
-                    window.loadChallenges();
+                    // 保持筛选为 pending（新约战默认是pending），并重新加载
+                    document.getElementById('challengeFilterStatus').value = 'pending';
+                    await window.loadChallenges();
                     window.updateNotificationBadge();
                 } else {
                     showBanner((res && res.error) || 'Failed to send challenge', 'error');

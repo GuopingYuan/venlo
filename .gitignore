@@ -9,6 +9,8 @@ __pycache__/
 
 # Build artifacts
 patch_profile.py
+*.zip
+deploy/
 
 # OS
 .DS_Store

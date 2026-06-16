@@ -961,16 +961,23 @@ def list_challenges():
         my_team_ids = [r[0] for r in conn.execute(
             "SELECT team_id FROM team_members WHERE user_id=?", (user_id,)
         ).fetchall()]
+        # ⚠️ 注意：params 顺序必须和 SQL ? 占位符顺序一致！
+        # SQL 顺序：individual challenger_id → individual challenged_id → team clauses
+        # 所以 user_id 必须先加入 params，然后才是 team_ids
         team_clause = ""
         if my_team_ids:
             placeholders = ",".join(["?"] * len(my_team_ids))
             team_clause = f" OR (pc.challenger_type='team' AND pc.challenger_id IN ({placeholders})) OR (pc.challenged_type='team' AND pc.challenged_id IN ({placeholders}))"
-            params.extend(my_team_ids)
-            params.extend(my_team_ids)
         q += f" AND ((pc.challenger_type='individual' AND pc.challenger_id=?) OR (pc.challenged_type='individual' AND pc.challenged_id=?){team_clause})"
+        # 先加 user_id（对应 individual 条件），再加 team_ids（对应 IN 条件）
         params.extend([user_id, user_id])
+        if my_team_ids:
+            params.extend(my_team_ids)
+            params.extend(my_team_ids)
     q += " ORDER BY pc.created_at DESC"
+    app.logger.info('[list_challenges] SQL: %s params: %s', q, params)
     rows = conn.execute(q, params).fetchall()
+    app.logger.info('[list_challenges] found %d rows', len(rows))
     result = []
     for r in rows:
         d = dict(r)
